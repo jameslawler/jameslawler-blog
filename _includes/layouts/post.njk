@@ -1,0 +1,36 @@
+---
+layout: layouts/base.njk
+---
+
+<h1 class="text-3xl font-bold mb-4">{{ title }}</h1>
+
+<div class="flex flex-row gap-4">
+	<time datetime="{{ page.date | htmlDateString }}">{{
+		page.date | readableDate
+	}}</time>
+	{%- for tag in tags | filterTagList %} {%- set tagUrl %}/tags/{{
+		tag | slugify
+	}}/{% endset %}
+	<div class="bg-gray-100 border-gray-500 rounded-md px-2">
+		<a href="{{ tagUrl }}" class="post-tag">{{ tag }}</a>
+	</div>
+	{%- endfor %}
+</div>
+
+{{ content | safe }}
+
+{%- if collections.articles %} {%- set previousPost = collections.articles |
+getPreviousCollectionItem %} {%- set nextPost = collections.articles |
+getNextCollectionItem %} {%- if nextPost or previousPost %}
+<ul class="links-nextprev">
+	{%- if previousPost %}
+	<li>
+		Previous: <a href="{{ previousPost.url }}">{{ previousPost.data.title }}</a>
+	</li>
+	{% endif %} {%- if nextPost %}
+	<li>
+		Next: <a href="{{ nextPost.url }}">{{ nextPost.data.title }}</a>
+	</li>
+	{% endif %}
+</ul>
+{%- endif %} {%- endif %}
