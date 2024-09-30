@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Cache npm
         uses: actions/cache@v3
@@ -33,7 +33,7 @@ jobs:
           key: ${{ runner.os }}-eleventy-fetch-cache
 
       - run: npm install
-      - run: npm run build-ghpages
+      - run: npm run build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
