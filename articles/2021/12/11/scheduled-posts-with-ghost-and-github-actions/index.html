@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scheduled Posts with Ghost and GitHub Actions</title>
     <meta name="description" content="Automatically publish schedule post to a static Ghost blog instance running on GitHub Pages.">
-    <link rel="alternate" href="/jameslawler-blog/feed/feed.xml" type="application/atom+xml" title="James Lawler">
-    <link rel="alternate" href="/jameslawler-blog/feed/feed.json" type="application/json" title="James Lawler">
+    <link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="James Lawler">
+    <link rel="alternate" href="/feed/feed.json" type="application/json" title="James Lawler">
     <meta name="generator" content="Eleventy v2.0.1">
 
-    <link rel="stylesheet" href="/jameslawler-blog/jameslawler-blog/assets/css/tailwind.css">
+    <link rel="stylesheet" href="/assets/css/tailwind.css">
 
-    <link rel="apple-touch-icon" sizes="180x180" href="/jameslawler-blog/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/jameslawler-blog/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/jameslawler-blog/favicon-16x16.png">
-    <link rel="manifest" href="/jameslawler-blog/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
   </head>
   <body class="container mx-auto mt-4 md:mt-12 dark:bg-slate-900">
     <a href="#skip" class="hidden visually-hidden">Skip to main content</a>
@@ -22,18 +22,18 @@
     <header>
       <div class="flex items-center">
         <div class="flex flex-col flex-1">
-          <a href="/jameslawler-blog/" class="text-3xl pb-6 font-bold dark:text-gray-100">James Lawler</a>
+          <a href="/" class="text-3xl pb-6 font-bold dark:text-gray-100">James Lawler</a>
           <nav>
             <h2 class="hidden visually-hidden">Top level navigation menu</h2>
             <ul class="flex flex-row gap-8">
-              <li class="dark:text-gray-100"><a href="/jameslawler-blog/">Home</a></li>
-              <li class="dark:text-gray-100"><a href="/jameslawler-blog/articles/">Articles</a></li>
+              <li class="dark:text-gray-100"><a href="/">Home</a></li>
+              <li class="dark:text-gray-100"><a href="/articles/">Articles</a></li>
               <li class="dark:text-gray-100"><a href="https://notes.jameslawler.com/">Notes</a></li>
-              <li class="dark:text-gray-100"><a href="/jameslawler-blog/follow-me/">Follow Me</a></li>
+              <li class="dark:text-gray-100"><a href="/follow-me/">Follow Me</a></li>
             </ul>
           </nav>
         </div>
-        <img src="/jameslawler-blog/img/james-lawler.jpg" class="hidden size-20 rounded-full md:block">
+        <img src="/img/james-lawler.jpg" class="hidden size-20 rounded-full md:block" />
       </div>
       
     </header>
@@ -45,16 +45,22 @@
 <h1 class="text-3xl font-bold mb-4 dark:text-gray-100">Scheduled Posts with Ghost and GitHub Actions</h1>
 
 <div class="flex flex-row gap-4">
-  <time class="dark:text-gray-100" datetime="2021-12-11">11 December 2021</time>
-  <div class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100">
-    <a href="/jameslawler-blog/tags/ghost/" class="post-tag">ghost</a>
+  <time
+    class="dark:text-gray-100"
+    datetime="2021-12-11"
+    >11 December 2021</time
+  >
+  <div
+    class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100"
+  >
+    <a href="/tags/ghost/" class="post-tag">ghost</a>
   </div>
 </div>
 
-<p>Sometimes I want posts in my Ghost blog to only publish in the future on a set date. Ghost has the feature built in, but it is intended to be used with a dynamic Ghost blog that will instantly show the new post when the scheduled date is reached. As I run a static Ghost blog, I wanted to be able to have the same possibilities. To see how I setup a static Ghost blog on GitHub Pages you can see <a href="/jameslawler-blog/tags/ghost/">my other posts</a> on the topic.</p>
+<p>Sometimes I want posts in my Ghost blog to only publish in the future on a set date. Ghost has the feature built in, but it is intended to be used with a dynamic Ghost blog that will instantly show the new post when the scheduled date is reached. As I run a static Ghost blog, I wanted to be able to have the same possibilities. To see how I setup a static Ghost blog on GitHub Pages you can see <a href="/tags/ghost/">my other posts</a> on the topic.</p>
 <h2>Scheduled Posts</h2>
 <p>In the Ghost editor when you save an article you have the option to <strong>Set it live now</strong> or <strong><em>Schedule it for later</em></strong>. When you want to publish later, you can choose the date and time of the scheduled post.</p>
-<p><picture><source type="image/avif" srcset="/jameslawler-blog/img/tVzU4dhtzl-361.avif 361w"><source type="image/webp" srcset="/jameslawler-blog/img/tVzU4dhtzl-361.webp 361w"><img alt="Ghost publish options" loading="lazy" decoding="async" src="/jameslawler-blog/img/tVzU4dhtzl-361.png" width="361" height="330"></picture></p>
+<p><picture><source type="image/avif" srcset="/img/tVzU4dhtzl-361.avif 361w"><source type="image/webp" srcset="/img/tVzU4dhtzl-361.webp 361w"><img alt="Ghost publish options" loading="lazy" decoding="async" src="/img/tVzU4dhtzl-361.png" width="361" height="330"></picture></p>
 <p>In order for the post to go live at the specified date and time, the Ghost server needs to be running. In order to achieve this, I have setup GitHub Actions to run automatically once a day on a fixed schedule. The workflow is the same as the previous posts with the addition of a <a href="https://crontab.guru/">cron</a> schedule to the trigger section.</p>
 <pre class="language-yaml" tabindex="0"><code class="language-yaml"><span class="token key atrule">on</span><span class="token punctuation">:</span>
   <span class="token key atrule">push</span><span class="token punctuation">:</span>
@@ -64,18 +70,18 @@
 <p>This workflow will trigger on a push to the <strong>main</strong> branch, or everyday at 8pm UTC time. It is important to note that the cron schedule uses UTC time and so you will need to adjust it if you want it to match your local time. To have more granular post times, you would need to increase the frequency of the cron schedule.</p>
 <h2>Perfect Streak</h2>
 <p>The only &quot;negative&quot; with this approach is that it automatically makes daily commits to one of your repositories and it makes your GitHub contributions graph look not so honest.</p>
-<p><picture><source type="image/avif" srcset="/jameslawler-blog/img/ngCV2yWaAY-1334.avif 1334w"><source type="image/webp" srcset="/jameslawler-blog/img/ngCV2yWaAY-1334.webp 1334w"><img alt="GitHub streak graph" loading="lazy" decoding="async" src="/jameslawler-blog/img/ngCV2yWaAY-1334.png" width="1334" height="325"></picture></p>
+<p><picture><source type="image/avif" srcset="/img/ngCV2yWaAY-1334.avif 1334w"><source type="image/webp" srcset="/img/ngCV2yWaAY-1334.webp 1334w"><img alt="GitHub streak graph" loading="lazy" decoding="async" src="/img/ngCV2yWaAY-1334.png" width="1334" height="325"></picture></p>
 <p>You can see that from December onwards is when I enabled the daily GitHub Action to build and deploy my static Ghost blog. But apart from that, the solution is simple and works.</p>
 <h2>Summary</h2>
 <p>Using GitHub Actions with a cron schedule allows scheduled Ghost posts to go live within an acceptable timeframe of the publish date. I would say this is fine for a personal blog with infrequent posts. In the future I want to find a way to not publish to GitHub Pages if there were no updates. Perhaps checking if any new urls have been generated since the last time.</p>
 
 <ul>
   <li>
-    Previous: <a href="/jameslawler-blog/articles/2021/12/04/custom-domain-for-static-ghost-blog-on-github-pages/">Custom Domain for Static Ghost Blog on GitHub Pages</a>
+    Previous: <a href="/articles/2021/12/04/custom-domain-for-static-ghost-blog-on-github-pages/">Custom Domain for Static Ghost Blog on GitHub Pages</a>
   </li>
   
   <li>
-    Next: <a href="/jameslawler-blog/articles/2021/12/17/private-repository-to-build-and-deploy-ghost-blog/">Private Repository to Build and Deploy Ghost Blog</a>
+    Next: <a href="/articles/2021/12/17/private-repository-to-build-and-deploy-ghost-blog/">Private Repository to Build and Deploy Ghost Blog</a>
   </li>
   
 </ul>

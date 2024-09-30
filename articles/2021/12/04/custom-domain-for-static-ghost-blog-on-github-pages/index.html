@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Domain for Static Ghost Blog on GitHub Pages</title>
     <meta name="description" content="Run a self hosted Ghost blog on GitHub Pages with a custom domain">
-    <link rel="alternate" href="/jameslawler-blog/feed/feed.xml" type="application/atom+xml" title="James Lawler">
-    <link rel="alternate" href="/jameslawler-blog/feed/feed.json" type="application/json" title="James Lawler">
+    <link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="James Lawler">
+    <link rel="alternate" href="/feed/feed.json" type="application/json" title="James Lawler">
     <meta name="generator" content="Eleventy v2.0.1">
 
-    <link rel="stylesheet" href="/jameslawler-blog/jameslawler-blog/assets/css/tailwind.css">
+    <link rel="stylesheet" href="/assets/css/tailwind.css">
 
-    <link rel="apple-touch-icon" sizes="180x180" href="/jameslawler-blog/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/jameslawler-blog/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/jameslawler-blog/favicon-16x16.png">
-    <link rel="manifest" href="/jameslawler-blog/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
   </head>
   <body class="container mx-auto mt-4 md:mt-12 dark:bg-slate-900">
     <a href="#skip" class="hidden visually-hidden">Skip to main content</a>
@@ -22,18 +22,18 @@
     <header>
       <div class="flex items-center">
         <div class="flex flex-col flex-1">
-          <a href="/jameslawler-blog/" class="text-3xl pb-6 font-bold dark:text-gray-100">James Lawler</a>
+          <a href="/" class="text-3xl pb-6 font-bold dark:text-gray-100">James Lawler</a>
           <nav>
             <h2 class="hidden visually-hidden">Top level navigation menu</h2>
             <ul class="flex flex-row gap-8">
-              <li class="dark:text-gray-100"><a href="/jameslawler-blog/">Home</a></li>
-              <li class="dark:text-gray-100"><a href="/jameslawler-blog/articles/">Articles</a></li>
+              <li class="dark:text-gray-100"><a href="/">Home</a></li>
+              <li class="dark:text-gray-100"><a href="/articles/">Articles</a></li>
               <li class="dark:text-gray-100"><a href="https://notes.jameslawler.com/">Notes</a></li>
-              <li class="dark:text-gray-100"><a href="/jameslawler-blog/follow-me/">Follow Me</a></li>
+              <li class="dark:text-gray-100"><a href="/follow-me/">Follow Me</a></li>
             </ul>
           </nav>
         </div>
-        <img src="/jameslawler-blog/img/james-lawler.jpg" class="hidden size-20 rounded-full md:block">
+        <img src="/img/james-lawler.jpg" class="hidden size-20 rounded-full md:block" />
       </div>
       
     </header>
@@ -45,9 +45,15 @@
 <h1 class="text-3xl font-bold mb-4 dark:text-gray-100">Custom Domain for Static Ghost Blog on GitHub Pages</h1>
 
 <div class="flex flex-row gap-4">
-  <time class="dark:text-gray-100" datetime="2021-12-04">04 December 2021</time>
-  <div class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100">
-    <a href="/jameslawler-blog/tags/ghost/" class="post-tag">ghost</a>
+  <time
+    class="dark:text-gray-100"
+    datetime="2021-12-04"
+    >04 December 2021</time
+  >
+  <div
+    class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100"
+  >
+    <a href="/tags/ghost/" class="post-tag">ghost</a>
   </div>
 </div>
 
@@ -58,7 +64,7 @@
   <span class="token key atrule">run</span><span class="token punctuation">:</span> gssg <span class="token punctuation">-</span><span class="token punctuation">-</span>url https<span class="token punctuation">:</span>//www.jameslawler.com</code></pre>
 <h2>GitHub Pages Settings</h2>
 <p>On the GitHub Pages settings page you need to specify your custom domain, for example <strong>www.jameslawler.com</strong></p>
-<p><picture><source type="image/avif" srcset="/jameslawler-blog/img/py0z9ofhOO-1517.avif 1517w"><source type="image/webp" srcset="/jameslawler-blog/img/py0z9ofhOO-1517.webp 1517w"><img alt="Custom domain configuration example" loading="lazy" decoding="async" src="/jameslawler-blog/img/py0z9ofhOO-1517.png" width="1517" height="734"></picture></p>
+<p><picture><source type="image/avif" srcset="/img/py0z9ofhOO-1517.avif 1517w"><source type="image/webp" srcset="/img/py0z9ofhOO-1517.webp 1517w"><img alt="Custom domain configuration example" loading="lazy" decoding="async" src="/img/py0z9ofhOO-1517.png" width="1517" height="734"></picture></p>
 <h2>Domain DNS Settings</h2>
 <p>The final step is to configure your domain name registry to point your domain name to GitHub Pages IP addresses. Depending on the domain registry they will have different interfaces to change the settings.</p>
 <pre class="language-yaml" tabindex="0"><code class="language-yaml">        A record for @ pointing to 185.199.108.153
@@ -72,11 +78,11 @@
 
 <ul>
   <li>
-    Previous: <a href="/jameslawler-blog/articles/2021/11/27/ghost-blog-on-github-pages-using-github-actions/">Ghost Blog on GitHub Pages using GitHub Actions</a>
+    Previous: <a href="/articles/2021/11/27/ghost-blog-on-github-pages-using-github-actions/">Ghost Blog on GitHub Pages using GitHub Actions</a>
   </li>
   
   <li>
-    Next: <a href="/jameslawler-blog/articles/2021/12/11/scheduled-posts-with-ghost-and-github-actions/">Scheduled Posts with Ghost and GitHub Actions</a>
+    Next: <a href="/articles/2021/12/11/scheduled-posts-with-ghost-and-github-actions/">Scheduled Posts with Ghost and GitHub Actions</a>
   </li>
   
 </ul>

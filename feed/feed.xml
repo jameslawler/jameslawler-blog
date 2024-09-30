@@ -2,8 +2,8 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:base="en">
 	<title>James Lawler</title>
 	<subtitle>I am writing about my experiences as a naval navel-gazer.</subtitle>
-	<link href="https://www.jameslawler.com/jameslawler-blog/feed/feed.xml" rel="self"/>
-	<link href="https://www.jameslawler.com/jameslawler-blog/"/>
+	<link href="https://www.jameslawler.com/feed/feed.xml" rel="self"/>
+	<link href="https://www.jameslawler.com/"/>
 	<updated>2021-12-17T00:00:00Z</updated>
 	<id>https://www.jameslawler.com/</id>
 	<author>
@@ -12,9 +12,9 @@
 	
 	<entry>
 		<title>Private Repository to Build and Deploy Ghost Blog</title>
-		<link href="https://www.jameslawler.com/jameslawler-blog/articles/2021/12/17/private-repository-to-build-and-deploy-ghost-blog/"/>
+		<link href="https://www.jameslawler.com/articles/2021/12/17/private-repository-to-build-and-deploy-ghost-blog/"/>
 		<updated>2021-12-17T00:00:00Z</updated>
-		<id>https://www.jameslawler.com/jameslawler-blog/articles/2021/12/17/private-repository-to-build-and-deploy-ghost-blog/</id>
+		<id>https://www.jameslawler.com/articles/2021/12/17/private-repository-to-build-and-deploy-ghost-blog/</id>
 		<content type="html">&lt;p&gt;This is a follow up from a previous post about setting up a Ghost Blog on GitHub pages using GitHub Actions. In that post I described using a public GitHub repository to host both the Ghost content folder and the generated static website. In this post I will show how to keep the Ghost content folder in a private repository and only host the generated static website in a public repository.&lt;/p&gt;
 &lt;h2&gt;What you need&lt;/h2&gt;
 &lt;ul&gt;
@@ -43,13 +43,13 @@
 	
 	<entry>
 		<title>Scheduled Posts with Ghost and GitHub Actions</title>
-		<link href="https://www.jameslawler.com/jameslawler-blog/articles/2021/12/11/scheduled-posts-with-ghost-and-github-actions/"/>
+		<link href="https://www.jameslawler.com/articles/2021/12/11/scheduled-posts-with-ghost-and-github-actions/"/>
 		<updated>2021-12-11T00:00:00Z</updated>
-		<id>https://www.jameslawler.com/jameslawler-blog/articles/2021/12/11/scheduled-posts-with-ghost-and-github-actions/</id>
-		<content type="html">&lt;p&gt;Sometimes I want posts in my Ghost blog to only publish in the future on a set date. Ghost has the feature built in, but it is intended to be used with a dynamic Ghost blog that will instantly show the new post when the scheduled date is reached. As I run a static Ghost blog, I wanted to be able to have the same possibilities. To see how I setup a static Ghost blog on GitHub Pages you can see &lt;a href=&quot;https://www.jameslawler.com/jameslawler-blog/tags/ghost/&quot;&gt;my other posts&lt;/a&gt; on the topic.&lt;/p&gt;
+		<id>https://www.jameslawler.com/articles/2021/12/11/scheduled-posts-with-ghost-and-github-actions/</id>
+		<content type="html">&lt;p&gt;Sometimes I want posts in my Ghost blog to only publish in the future on a set date. Ghost has the feature built in, but it is intended to be used with a dynamic Ghost blog that will instantly show the new post when the scheduled date is reached. As I run a static Ghost blog, I wanted to be able to have the same possibilities. To see how I setup a static Ghost blog on GitHub Pages you can see &lt;a href=&quot;https://www.jameslawler.com/tags/ghost/&quot;&gt;my other posts&lt;/a&gt; on the topic.&lt;/p&gt;
 &lt;h2&gt;Scheduled Posts&lt;/h2&gt;
 &lt;p&gt;In the Ghost editor when you save an article you have the option to &lt;strong&gt;Set it live now&lt;/strong&gt; or &lt;strong&gt;&lt;em&gt;Schedule it for later&lt;/em&gt;&lt;/strong&gt;. When you want to publish later, you can choose the date and time of the scheduled post.&lt;/p&gt;
-&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://www.jameslawler.com/jameslawler-blog/img/tVzU4dhtzl-361.avif 361w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://www.jameslawler.com/jameslawler-blog/img/tVzU4dhtzl-361.webp 361w&quot;&gt;&lt;img alt=&quot;Ghost publish options&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://www.jameslawler.com/jameslawler-blog/img/tVzU4dhtzl-361.png&quot; width=&quot;361&quot; height=&quot;330&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://www.jameslawler.com/img/tVzU4dhtzl-361.avif 361w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://www.jameslawler.com/img/tVzU4dhtzl-361.webp 361w&quot;&gt;&lt;img alt=&quot;Ghost publish options&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://www.jameslawler.com/img/tVzU4dhtzl-361.png&quot; width=&quot;361&quot; height=&quot;330&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
 &lt;p&gt;In order for the post to go live at the specified date and time, the Ghost server needs to be running. In order to achieve this, I have setup GitHub Actions to run automatically once a day on a fixed schedule. The workflow is the same as the previous posts with the addition of a &lt;a href=&quot;https://crontab.guru/&quot;&gt;cron&lt;/a&gt; schedule to the trigger section.&lt;/p&gt;
 &lt;pre class=&quot;language-yaml&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-yaml&quot;&gt;&lt;span class=&quot;token key atrule&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
   &lt;span class=&quot;token key atrule&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
@@ -59,7 +59,7 @@
 &lt;p&gt;This workflow will trigger on a push to the &lt;strong&gt;main&lt;/strong&gt; branch, or everyday at 8pm UTC time. It is important to note that the cron schedule uses UTC time and so you will need to adjust it if you want it to match your local time. To have more granular post times, you would need to increase the frequency of the cron schedule.&lt;/p&gt;
 &lt;h2&gt;Perfect Streak&lt;/h2&gt;
 &lt;p&gt;The only &amp;quot;negative&amp;quot; with this approach is that it automatically makes daily commits to one of your repositories and it makes your GitHub contributions graph look not so honest.&lt;/p&gt;
-&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://www.jameslawler.com/jameslawler-blog/img/ngCV2yWaAY-1334.avif 1334w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://www.jameslawler.com/jameslawler-blog/img/ngCV2yWaAY-1334.webp 1334w&quot;&gt;&lt;img alt=&quot;GitHub streak graph&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://www.jameslawler.com/jameslawler-blog/img/ngCV2yWaAY-1334.png&quot; width=&quot;1334&quot; height=&quot;325&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://www.jameslawler.com/img/ngCV2yWaAY-1334.avif 1334w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://www.jameslawler.com/img/ngCV2yWaAY-1334.webp 1334w&quot;&gt;&lt;img alt=&quot;GitHub streak graph&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://www.jameslawler.com/img/ngCV2yWaAY-1334.png&quot; width=&quot;1334&quot; height=&quot;325&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
 &lt;p&gt;You can see that from December onwards is when I enabled the daily GitHub Action to build and deploy my static Ghost blog. But apart from that, the solution is simple and works.&lt;/p&gt;
 &lt;h2&gt;Summary&lt;/h2&gt;
 &lt;p&gt;Using GitHub Actions with a cron schedule allows scheduled Ghost posts to go live within an acceptable timeframe of the publish date. I would say this is fine for a personal blog with infrequent posts. In the future I want to find a way to not publish to GitHub Pages if there were no updates. Perhaps checking if any new urls have been generated since the last time.&lt;/p&gt;
@@ -68,9 +68,9 @@
 	
 	<entry>
 		<title>Custom Domain for Static Ghost Blog on GitHub Pages</title>
-		<link href="https://www.jameslawler.com/jameslawler-blog/articles/2021/12/04/custom-domain-for-static-ghost-blog-on-github-pages/"/>
+		<link href="https://www.jameslawler.com/articles/2021/12/04/custom-domain-for-static-ghost-blog-on-github-pages/"/>
 		<updated>2021-12-04T00:00:00Z</updated>
-		<id>https://www.jameslawler.com/jameslawler-blog/articles/2021/12/04/custom-domain-for-static-ghost-blog-on-github-pages/</id>
+		<id>https://www.jameslawler.com/articles/2021/12/04/custom-domain-for-static-ghost-blog-on-github-pages/</id>
 		<content type="html">&lt;p&gt;In this post I will share how I run this static Ghost blog for free using GitHub Pages and a custom domain. This is a continuation from my previous post about starting a static Ghost blog on GitHub Pages.&lt;/p&gt;
 &lt;h2&gt;GitHub Workflow&lt;/h2&gt;
 &lt;p&gt;The only change needed for the GitHub Workflow file is to generate the static ghost site using the &lt;strong&gt;--url&lt;/strong&gt; parameter pointing to your custom domain.&lt;/p&gt;
@@ -78,7 +78,7 @@
   &lt;span class=&quot;token key atrule&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; gssg &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;url https&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;//www.jameslawler.com&lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;GitHub Pages Settings&lt;/h2&gt;
 &lt;p&gt;On the GitHub Pages settings page you need to specify your custom domain, for example &lt;strong&gt;www.jameslawler.com&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://www.jameslawler.com/jameslawler-blog/img/py0z9ofhOO-1517.avif 1517w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://www.jameslawler.com/jameslawler-blog/img/py0z9ofhOO-1517.webp 1517w&quot;&gt;&lt;img alt=&quot;Custom domain configuration example&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://www.jameslawler.com/jameslawler-blog/img/py0z9ofhOO-1517.png&quot; width=&quot;1517&quot; height=&quot;734&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://www.jameslawler.com/img/py0z9ofhOO-1517.avif 1517w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://www.jameslawler.com/img/py0z9ofhOO-1517.webp 1517w&quot;&gt;&lt;img alt=&quot;Custom domain configuration example&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://www.jameslawler.com/img/py0z9ofhOO-1517.png&quot; width=&quot;1517&quot; height=&quot;734&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
 &lt;h2&gt;Domain DNS Settings&lt;/h2&gt;
 &lt;p&gt;The final step is to configure your domain name registry to point your domain name to GitHub Pages IP addresses. Depending on the domain registry they will have different interfaces to change the settings.&lt;/p&gt;
 &lt;pre class=&quot;language-yaml&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-yaml&quot;&gt;        A record for @ pointing to 185.199.108.153
@@ -94,9 +94,9 @@
 	
 	<entry>
 		<title>Ghost Blog on GitHub Pages using GitHub Actions</title>
-		<link href="https://www.jameslawler.com/jameslawler-blog/articles/2021/11/27/ghost-blog-on-github-pages-using-github-actions/"/>
+		<link href="https://www.jameslawler.com/articles/2021/11/27/ghost-blog-on-github-pages-using-github-actions/"/>
 		<updated>2021-11-27T00:00:00Z</updated>
-		<id>https://www.jameslawler.com/jameslawler-blog/articles/2021/11/27/ghost-blog-on-github-pages-using-github-actions/</id>
+		<id>https://www.jameslawler.com/articles/2021/11/27/ghost-blog-on-github-pages-using-github-actions/</id>
 		<content type="html">&lt;p&gt;In this post I will share how I built up this website for free using Ghost CMS, GitHub Pages, and GitHub Actions.&lt;/p&gt;
 &lt;h2&gt;Ghost&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&quot;https://ghost.org/&quot;&gt;Ghost&lt;/a&gt; is a content management system for self publishing your own website - and it can be self hosted in a Docker container. To start this project you need to be running the Ghost Docker container on your development computer. This means you need to have Docker installed locally - and there is a &lt;a href=&quot;https://docs.docker.com/get-docker/&quot;&gt;handy guide&lt;/a&gt; on the Docker website for the main operating systems.&lt;/p&gt;
