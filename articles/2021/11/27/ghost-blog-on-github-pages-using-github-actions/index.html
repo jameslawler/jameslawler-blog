@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghost Blog on GitHub Pages using GitHub Actions</title>
+    <meta name="description" content="In this post I will share how I built up this website for free using Ghost CMS, GitHub Pages, and GitHub Actions.">
+    <link rel="alternate" href="/jameslawler-blog/feed/feed.xml" type="application/atom+xml" title="James Lawler">
+    <link rel="alternate" href="/jameslawler-blog/feed/feed.json" type="application/json" title="James Lawler">
+    <meta name="generator" content="Eleventy v2.0.1">
+
+    <link rel="stylesheet" href="/jameslawler-blog/jameslawler-blog/assets/css/tailwind.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/jameslawler-blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/jameslawler-blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/jameslawler-blog/favicon-16x16.png">
+    <link rel="manifest" href="/jameslawler-blog/site.webmanifest">
+  </head>
+  <body class="container mx-auto mt-4 md:mt-12 dark:bg-slate-900">
+    <a href="#skip" class="hidden visually-hidden">Skip to main content</a>
+
+    <header>
+      <div class="flex items-center">
+        <div class="flex flex-col flex-1">
+          <a href="/jameslawler-blog/" class="text-3xl pb-6 font-bold dark:text-gray-100">James Lawler</a>
+          <nav>
+            <h2 class="hidden visually-hidden">Top level navigation menu</h2>
+            <ul class="flex flex-row gap-8">
+              <li class="dark:text-gray-100"><a href="/jameslawler-blog/">Home</a></li>
+              <li class="dark:text-gray-100"><a href="/jameslawler-blog/articles/">Articles</a></li>
+              <li class="dark:text-gray-100"><a href="https://notes.jameslawler.com/">Notes</a></li>
+              <li class="dark:text-gray-100"><a href="/jameslawler-blog/follow-me/">Follow Me</a></li>
+            </ul>
+          </nav>
+        </div>
+        <img src="/jameslawler-blog/img/james-lawler.jpg" class="hidden size-20 rounded-full md:block">
+      </div>
+      
+    </header>
+
+    <hr class="my-8 h-px bg-gray-400 border-0 dark:bg-gray-100">
+
+    <main id="skip" class="prose max-w-none dark:prose-invert">
+      
+<h1 class="text-3xl font-bold mb-4 dark:text-gray-100">Ghost Blog on GitHub Pages using GitHub Actions</h1>
+
+<div class="flex flex-row gap-4">
+  <time class="dark:text-gray-100" datetime="2021-11-27">27 November 2021</time>
+  <div class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100">
+    <a href="/jameslawler-blog/tags/ghost/" class="post-tag">ghost</a>
+  </div>
+</div>
+
+<p>In this post I will share how I built up this website for free using Ghost CMS, GitHub Pages, and GitHub Actions.</p>
+<h2>Ghost</h2>
+<p><a href="https://ghost.org/">Ghost</a> is a content management system for self publishing your own website - and it can be self hosted in a Docker container. To start this project you need to be running the Ghost Docker container on your development computer. This means you need to have Docker installed locally - and there is a <a href="https://docs.docker.com/get-docker/">handy guide</a> on the Docker website for the main operating systems.</p>
+<p>Before starting up the Ghost Docker container you will need a directory where you can store the Ghost content (static assets, SQL database, etc). For this post I setup a <a href="https://github.com/jameslawlercom/2021-11-27-ghost-blog-on-github-pages-using-github-actions">new repository</a> in GitHub to store the content so it would stay under version control.</p>
+<p>To start the Ghost Docker container on your local machine, open a console and navigate to the directory you have setup with a GitHub repository and execute the following command.</p>
+<blockquote>
+<p>docker run -d -p 2368:2368 -v content:/var/lib/ghost/content ghost:alpine</p>
+</blockquote>
+<p>This command will run up the latest version of Ghost using the <a href="https://hub.docker.com/_/ghost">alpine Docker image</a>. It will run on the standard <strong>2368</strong> port and mount the current <strong>content</strong> directory into the Docker container at <strong>/var/lib/ghost/content</strong>. This means that any changes to the Ghost instance (new posts, theme, etc) will be exposed to the current working folder and can be committed to GitHub.</p>
+<p>After running the command, you should be able to access the locally running version of Ghost at <strong>http:// localhost:2368/</strong>. At first you will need to setup an account (only saved in your local database), and then you will be able to add new pages, posts, and change the navigation settings etc. You will also be able to configure the theme for your website.</p>
+<h2>GitHub Workflow</h2>
+<p>Once there is a locally running instance of Ghost, the next step is to get it running in GitHub Pages. The key to do this is using GitHub Actions with the help of a GitHub workflow. To setup a GitHub workflow you need to add a <strong>.github\workflows</strong> folder. Each GitHub workflow is just a <strong>yaml</strong> file within this directory.</p>
+<pre class="language-yaml" tabindex="0"><code class="language-yaml"><span class="token key atrule">name</span><span class="token punctuation">:</span> Deploy Ghost and Generate Static Site
+
+<span class="token key atrule">on</span><span class="token punctuation">:</span>
+<span class="token key atrule">push</span><span class="token punctuation">:</span>
+<span class="token key atrule">branches</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>main<span class="token punctuation">]</span>
+
+<span class="token key atrule">jobs</span><span class="token punctuation">:</span>
+<span class="token key atrule">build</span><span class="token punctuation">:</span>
+<span class="token key atrule">runs-on</span><span class="token punctuation">:</span> ubuntu<span class="token punctuation">-</span>latest
+<span class="token key atrule">steps</span><span class="token punctuation">:</span> <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Check out Model Repository
+<span class="token key atrule">uses</span><span class="token punctuation">:</span> <span class="token key atrule">actions/checkout@v2 - name</span><span class="token punctuation">:</span> Run Ghost
+<span class="token key atrule">run</span><span class="token punctuation">:</span> <span class="token key atrule">docker run -d -p 2368:2368 -v $/content:/var/lib/ghost/content ghost:alpine - name</span><span class="token punctuation">:</span> Sleep for 10 seconds
+<span class="token key atrule">uses</span><span class="token punctuation">:</span> jakejarvis/wait<span class="token punctuation">-</span>action@master
+<span class="token key atrule">with</span><span class="token punctuation">:</span>
+<span class="token key atrule">time</span><span class="token punctuation">:</span> "10s" <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Install ghost<span class="token punctuation">-</span>static<span class="token punctuation">-</span>site<span class="token punctuation">-</span>generator
+<span class="token key atrule">run</span><span class="token punctuation">:</span> <span class="token key atrule">npm install -g ghost-static-site-generator - name</span><span class="token punctuation">:</span> Generate Static Site
+<span class="token key atrule">run</span><span class="token punctuation">:</span> <span class="token key atrule">gssg --url https://jameslawlercom.github.io --subDir 2021-11-27-ghost-blog-on-github-pages-using-github-actions - name</span><span class="token punctuation">:</span> Deploy to Github Pages
+<span class="token key atrule">uses</span><span class="token punctuation">:</span> JamesIves/github<span class="token punctuation">-</span>pages<span class="token punctuation">-</span>deploy<span class="token punctuation">-</span>action@4.1.7
+<span class="token key atrule">with</span><span class="token punctuation">:</span>
+<span class="token key atrule">branch</span><span class="token punctuation">:</span> gh<span class="token punctuation">-</span>pages
+<span class="token key atrule">folder</span><span class="token punctuation">:</span> static</code></pre>
+<p>In the first section, the trigger is configured. This means that this GitHub workflow will run when a commit is made on the <strong>main</strong> branch.</p>
+<pre class="language-yaml" tabindex="0"><code class="language-yaml"><span class="token key atrule">on</span><span class="token punctuation">:</span>
+<span class="token key atrule">push</span><span class="token punctuation">:</span>
+<span class="token key atrule">branches</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>main<span class="token punctuation">]</span></code></pre>
+<p>The scripts section defines the different scripts that will run one after the other during the GitHub workflow. The first simply checks out the latest version of the code to the build instance.</p>
+<pre class="language-yaml" tabindex="0"><code class="language-yaml"><span class="token key atrule">jobs</span><span class="token punctuation">:</span>
+<span class="token key atrule">build</span><span class="token punctuation">:</span>
+<span class="token key atrule">runs-on</span><span class="token punctuation">:</span> ubuntu<span class="token punctuation">-</span>latest
+<span class="token key atrule">steps</span><span class="token punctuation">:</span> <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Check out Model Repository
+<span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/checkout@v2</code></pre>
+<p>The next script is similar to the command we use to run Ghost locally. This will actually run up the instance of Ghost on the GitHub Actions build virtual machine. The main difference here is the use of the build parameter <strong>$</strong> to access the path to the working directory of the build folder.</p>
+<pre class="language-yaml" tabindex="0"><code class="language-yaml"><span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Run Ghost
+  <span class="token key atrule">run</span><span class="token punctuation">:</span> docker run <span class="token punctuation">-</span>d <span class="token punctuation">-</span>p 2368<span class="token punctuation">:</span>2368 <span class="token punctuation">-</span>v $/content<span class="token punctuation">:</span>/var/lib/ghost/content ghost<span class="token punctuation">:</span>alpine</code></pre>
+<p>As Ghost can take a few seconds to start up, a wait script is added to pause the process for 10 seconds.</p>
+<pre class="language-yaml" tabindex="0"><code class="language-yaml"><span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Sleep for 10 seconds
+  <span class="token key atrule">uses</span><span class="token punctuation">:</span> jakejarvis/wait<span class="token punctuation">-</span>action@master
+  <span class="token key atrule">with</span><span class="token punctuation">:</span>
+  <span class="token key atrule">time</span><span class="token punctuation">:</span> <span class="token string">"10s"</span></code></pre>
+<p>Once enough time has passed, the next script installs globally a npm script that can crawl the Ghost instance and generate a static version of the website.</p>
+<pre class="language-yaml" tabindex="0"><code class="language-yaml"><span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Install ghost<span class="token punctuation">-</span>static<span class="token punctuation">-</span>site<span class="token punctuation">-</span>generator
+  <span class="token key atrule">run</span><span class="token punctuation">:</span> npm install <span class="token punctuation">-</span>g ghost<span class="token punctuation">-</span>static<span class="token punctuation">-</span>site<span class="token punctuation">-</span>generator</code></pre>
+<p>The next script will run this tool to do the crawl and generate a static version of the website into a folder called <strong>static</strong>. The <strong>--url</strong> property is used to specify the base domain of the static website (in this case a GitHub Pages site). The <strong>--subDir</strong> property is used to specify a sub folder of the static website (in this case the name of the GitHub Pages project name).</p>
+<pre class="language-yaml" tabindex="0"><code class="language-yaml"><span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Generate Static Site
+  <span class="token key atrule">run</span><span class="token punctuation">:</span> gssg <span class="token punctuation">-</span><span class="token punctuation">-</span>url https<span class="token punctuation">:</span>//jameslawlercom.github.io <span class="token punctuation">-</span><span class="token punctuation">-</span>subDir 2021<span class="token punctuation">-</span>11<span class="token punctuation">-</span>27<span class="token punctuation">-</span>ghost<span class="token punctuation">-</span>blog<span class="token punctuation">-</span>on<span class="token punctuation">-</span>github<span class="token punctuation">-</span>pages<span class="token punctuation">-</span>using<span class="token punctuation">-</span>github<span class="token punctuation">-</span>actions</code></pre>
+<p>Finally the last script will deploy the <strong>static</strong> folder which contains our website to the <strong>gh-pages</strong> branch of the repository so that it is available on GitHub Pages.</p>
+<pre class="language-yaml" tabindex="0"><code class="language-yaml"><span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Deploy to Github Pages
+  <span class="token key atrule">uses</span><span class="token punctuation">:</span> JamesIves/github<span class="token punctuation">-</span>pages<span class="token punctuation">-</span>deploy<span class="token punctuation">-</span>action@4.1.7
+  <span class="token key atrule">with</span><span class="token punctuation">:</span>
+  <span class="token key atrule">branch</span><span class="token punctuation">:</span> gh<span class="token punctuation">-</span>pages
+  <span class="token key atrule">folder</span><span class="token punctuation">:</span> static</code></pre>
+<h2>GitHub Pages</h2>
+<p>The last stage of this project is to enable GitHub Pages on your repository. This is done via the <strong>Pages</strong> tab in the <a href="https://github.com/jameslawlercom/2021-11-27-ghost-blog-on-github-pages-using-github-actions/settings/pages">repository settings</a>.</p>
+<h2>Summary</h2>
+<p>After updating your blog using the Ghost admin website and push push to the main branch the changes, the ghost blog will be started in a docker container on the GitHub Actions server, a static version will be crawled automatically and then saved to the GitHub pages branch of the repository. A few minutes later, your website will be running on your GitHub Pages website.</p>
+<p>There is a demonstration repository available <a href="https://github.com/jameslawlercom/2021-11-27-ghost-blog-on-github-pages-using-github-actions">here</a> which demonstrates the <a href="https://github.com/jameslawlercom/2021-11-27-ghost-blog-on-github-pages-using-github-actions/actions">GitHub Actions</a> and <a href="https://jameslawlercom.github.io/2021-11-27-ghost-blog-on-github-pages-using-github-actions/">GitHub Pages</a> project.</p>
+
+<ul>
+  <li>
+    Next: <a href="/jameslawler-blog/articles/2021/12/04/custom-domain-for-static-ghost-blog-on-github-pages/">Custom Domain for Static Ghost Blog on GitHub Pages</a>
+  </li>
+  
+</ul>
+
+    </main>
+
+    <footer></footer>
+  </body>
+</html>

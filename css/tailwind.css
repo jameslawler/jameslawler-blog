@@ -1,0 +1,8 @@
+/* src/assets/css/tailwind.css*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  overflow-y:scroll;
+}

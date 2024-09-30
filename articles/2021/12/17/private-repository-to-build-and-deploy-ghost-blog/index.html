@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Repository to Build and Deploy Ghost Blog</title>
+    <meta name="description" content="How to setup a private and public repository system for hosting a static Ghost blog on GitHub Pages.">
+    <link rel="alternate" href="/jameslawler-blog/feed/feed.xml" type="application/atom+xml" title="James Lawler">
+    <link rel="alternate" href="/jameslawler-blog/feed/feed.json" type="application/json" title="James Lawler">
+    <meta name="generator" content="Eleventy v2.0.1">
+
+    <link rel="stylesheet" href="/jameslawler-blog/jameslawler-blog/assets/css/tailwind.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/jameslawler-blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/jameslawler-blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/jameslawler-blog/favicon-16x16.png">
+    <link rel="manifest" href="/jameslawler-blog/site.webmanifest">
+  </head>
+  <body class="container mx-auto mt-4 md:mt-12 dark:bg-slate-900">
+    <a href="#skip" class="hidden visually-hidden">Skip to main content</a>
+
+    <header>
+      <div class="flex items-center">
+        <div class="flex flex-col flex-1">
+          <a href="/jameslawler-blog/" class="text-3xl pb-6 font-bold dark:text-gray-100">James Lawler</a>
+          <nav>
+            <h2 class="hidden visually-hidden">Top level navigation menu</h2>
+            <ul class="flex flex-row gap-8">
+              <li class="dark:text-gray-100"><a href="/jameslawler-blog/">Home</a></li>
+              <li class="dark:text-gray-100"><a href="/jameslawler-blog/articles/">Articles</a></li>
+              <li class="dark:text-gray-100"><a href="https://notes.jameslawler.com/">Notes</a></li>
+              <li class="dark:text-gray-100"><a href="/jameslawler-blog/follow-me/">Follow Me</a></li>
+            </ul>
+          </nav>
+        </div>
+        <img src="/jameslawler-blog/img/james-lawler.jpg" class="hidden size-20 rounded-full md:block">
+      </div>
+      
+    </header>
+
+    <hr class="my-8 h-px bg-gray-400 border-0 dark:bg-gray-100">
+
+    <main id="skip" class="prose max-w-none dark:prose-invert">
+      
+<h1 class="text-3xl font-bold mb-4 dark:text-gray-100">Private Repository to Build and Deploy Ghost Blog</h1>
+
+<div class="flex flex-row gap-4">
+  <time class="dark:text-gray-100" datetime="2021-12-17">17 December 2021</time>
+  <div class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100">
+    <a href="/jameslawler-blog/tags/ghost/" class="post-tag">ghost</a>
+  </div>
+</div>
+
+<p>This is a follow up from a previous post about setting up a Ghost Blog on GitHub pages using GitHub Actions. In that post I described using a public GitHub repository to host both the Ghost content folder and the generated static website. In this post I will show how to keep the Ghost content folder in a private repository and only host the generated static website in a public repository.</p>
+<h2>What you need</h2>
+<ul>
+<li>A public repository in GitHub that will hold the generated static website</li>
+<li>A private repository in GitHub that will hold your content folder and GitHub workflow</li>
+</ul>
+<h2>Public Repository</h2>
+<p>Simply create a new repository in GitHub. You don't need to commit or push anything to it. This will happen automatically. The only thing you need to do is go to the repository settings and enable GitHub Pages on the <strong>gh-pages</strong> branch.</p>
+<h2>Private Repository</h2>
+<p>Create a private repository in GitHub and setup your Ghost blog by following the guide from my previous post. The different is in the GitHub workflow file. Here you need to configure the <strong>Deploy to GitHub Pages</strong> step to deploy to a different repository within your account.</p>
+<pre class="language-yaml" tabindex="0"><code class="language-yaml"><span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Deploy to GitHub Pages
+  <span class="token key atrule">uses</span><span class="token punctuation">:</span> JamesIves/github<span class="token punctuation">-</span>pages<span class="token punctuation">-</span>deploy<span class="token punctuation">-</span>action@4.1.7
+  <span class="token key atrule">with</span><span class="token punctuation">:</span>
+  <span class="token key atrule">branch</span><span class="token punctuation">:</span> gh<span class="token punctuation">-</span>pages
+  <span class="token key atrule">folder</span><span class="token punctuation">:</span> static
+  <span class="token key atrule">token</span><span class="token punctuation">:</span> $
+  <span class="token key atrule">repository-name</span><span class="token punctuation">:</span> jameslawler/jameslawler<span class="token punctuation">-</span>website</code></pre>
+<p>By default, your GitHub workflow won't have permission to manipulate another repository. In order to do this, you need to <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token">create a Personal Access Token</a>. The token should have at least the <strong>public_repo</strong> permission.</p>
+<p>Once you have the token you need to make it available to your GitHub workflow. Since this repository is private, you could just put it straight in the source code. But for better security practices, I would use a <strong>secret</strong> which can be <a href="https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository">configured at the repository</a> and then is passed to the <a href="https://docs.github.com/en/actions/security-guides/encrypted-secrets#using-encrypted-secrets-in-a-workflow">GitHub workflow inside a secret context</a>.</p>
+<h2>Testing it out</h2>
+<p>Once you have the public and private repositories setup, and you have the GitHub workflow modifications to connect the two repositories together, it is time to test it out. Trigger the GitHub workflow on the private repository. This will build the Ghost static site, and then push it to the <strong>gh-pages</strong> branch of the public repository. Within a few minutes, the blog will be available on your GitHub pages url.</p>
+<h2>Summary</h2>
+<p>I set this up with a two repository approach myself because I wanted to keep the Ghost content folder and database secret. The content folder contains upcoming posts, theme code, and also anyone can connect to the database file directly and look inside the tables. This way, the only public potion is the generated static files which the user will be able to see anyway when browsing the blog.</p>
+
+<ul>
+  <li>
+    Previous: <a href="/jameslawler-blog/articles/2021/12/11/scheduled-posts-with-ghost-and-github-actions/">Scheduled Posts with Ghost and GitHub Actions</a>
+  </li>
+  
+</ul>
+
+    </main>
+
+    <footer></footer>
+  </body>
+</html>
