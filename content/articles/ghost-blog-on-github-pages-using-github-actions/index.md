@@ -4,6 +4,11 @@ description: In this post I will share how I built up this website for free usin
 date: 2021-11-27
 tags:
   - ghost
+stack:
+  - ghost
+  - docker
+  - github_pages
+  - github_actions
 ---
 
 In this post I will share how I built up this website for free using Ghost CMS, GitHub Pages, and GitHub Actions.

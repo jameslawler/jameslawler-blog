@@ -18,18 +18,18 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
   </head>
-  <body class="container mx-auto mt-4 md:mt-12">
+  <body class="container mx-auto mt-4 md:mt-12 dark:bg-slate-900">
     <a href="#skip" class="hidden visually-hidden">Skip to main content</a>
 
     <header>
       <div class="flex items-center">
         <div class="flex flex-col flex-1">
-          <a href="/" class="text-3xl pb-6 font-bold">{{ metadata.title }}</a>
+          <a href="/" class="text-3xl pb-6 font-bold dark:text-gray-100">{{ metadata.title }}</a>
           <nav>
             <h2 class="hidden visually-hidden">Top level navigation menu</h2>
             <ul class="flex flex-row gap-8">
             {%- for entry in collections.all | eleventyNavigation %}
-              <li class="nav-item"><a href="{{ entry.url }}"{% if entry.url == page.url %} aria-current="page"{% endif %}>{{ entry.title }}</a></li>
+              <li class="dark:text-gray-100"><a href="{{ entry.url }}"{% if entry.url == page.url %} aria-current="page"{% endif %}>{{ entry.title }}</a></li>
             {%- endfor %}
             </ul>
           </nav>
@@ -39,9 +39,9 @@
       
     </header>
 
-    <hr class="my-8 h-px bg-gray-400 border-0 dark:bg-gray-700">
+    <hr class="my-8 h-px bg-gray-400 border-0 dark:bg-gray-100">
 
-    <main id="skip" class="prose max-w-none">
+    <main id="skip" class="prose max-w-none dark:prose-invert">
       {{ content | safe }}
     </main>
 
