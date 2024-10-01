@@ -22,7 +22,6 @@ My name is James Lawler and I am a full stack software developer. I currently fo
 {% for post in postslist | reverse %}
 	<li>
 		<a href="{{ post.url }}">{{ post.data.title }}</a>
-		<time datetime="{{ post.date | htmlDateString }}">{{ post.date | readableDate("LLLL yyyy") }}</time>
 	</li>
 {% endfor %}
 </ul>
