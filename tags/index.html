@@ -17,19 +17,20 @@
     <link rel="manifest" href="/site.webmanifest">
     <script defer data-domain="jameslawler.com" src="https://api.jameslawler.com/js/script.outbound-links.js"></script>
   </head>
-  <body class="container mx-auto mt-4 md:mt-12 dark:bg-slate-900">
+  <body class="flex flex-col container mx-auto min-h-screen dark:bg-slate-900">
     <a href="#skip" class="hidden visually-hidden">Skip to main content</a>
 
     <header>
-      <div class="flex items-center">
+      <div class="flex items-center mt-4 md:mt-12">
         <div class="flex flex-col flex-1">
           <a href="/" class="text-3xl pb-6 font-bold dark:text-gray-100">James Lawler</a>
           <nav>
             <h2 class="hidden visually-hidden">Top level navigation menu</h2>
-            <ul class="flex flex-row gap-8">
+            <ul class="flex flex-row gap-4 md:gap-8">
               <li class="dark:text-gray-100"><a href="/">Home</a></li>
               <li class="dark:text-gray-100"><a href="/articles/">Articles</a></li>
-              <li class="dark:text-gray-100"><a href="https://notes.jameslawler.com/">Notes</a></li>
+              <li class="dark:text-gray-100"><a href="/projects/">Projects</a></li>
+              <li class="dark:text-gray-100"><a href="/notes/">Notes</a></li>
               <li class="dark:text-gray-100"><a href="/follow-me/">Follow Me</a></li>
             </ul>
           </nav>
@@ -41,7 +42,7 @@
 
     <hr class="my-8 h-px bg-gray-400 border-0 dark:bg-gray-100">
 
-    <main id="skip" class="prose max-w-none dark:prose-invert">
+    <main id="skip" class="prose max-w-none flex-grow pb-24 dark:prose-invert">
       <h1>Tags</h1>
 
 <ul>
@@ -49,11 +50,20 @@
 	
 	<li><a href="/tags/ghost/" class="post-tag">ghost</a></li>
 
+	
+	<li><a href="/tags/projects/" class="post-tag">projects</a></li>
+
+	
+	<li><a href="/tags/project-active/" class="post-tag">project-active</a></li>
+
+	
+	<li><a href="/tags/project-archived/" class="post-tag">project-archived</a></li>
+
 </ul>
 
 
     </main>
 
-    <footer></footer>
+    <footer class="mx-auto pb-4">Copyright 2024 - James Lawler</footer>
   </body>
 </html>
