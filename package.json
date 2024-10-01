@@ -29,6 +29,7 @@
     "luxon": "^3.3.0",
     "markdown-it-anchor": "^8.6.7",
     "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.13"
+    "tailwindcss": "^3.4.13",
+    "tailwindcss-bg-patterns": "^0.3.0"
   }
 }

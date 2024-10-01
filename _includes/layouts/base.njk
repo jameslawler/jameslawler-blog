@@ -19,16 +19,16 @@
     <link rel="manifest" href="/site.webmanifest">
     <script defer data-domain="jameslawler.com" src="https://api.jameslawler.com/js/script.outbound-links.js"></script>
   </head>
-  <body class="container mx-auto mt-4 md:mt-12 dark:bg-slate-900">
+  <body class="flex flex-col container mx-auto min-h-screen dark:bg-slate-900">
     <a href="#skip" class="hidden visually-hidden">Skip to main content</a>
 
     <header>
-      <div class="flex items-center">
+      <div class="flex items-center mt-4 md:mt-12">
         <div class="flex flex-col flex-1">
           <a href="/" class="text-3xl pb-6 font-bold dark:text-gray-100">{{ metadata.title }}</a>
           <nav>
             <h2 class="hidden visually-hidden">Top level navigation menu</h2>
-            <ul class="flex flex-row gap-8">
+            <ul class="flex flex-row gap-4 md:gap-8">
             {%- for entry in collections.all | eleventyNavigation %}
               <li class="dark:text-gray-100"><a href="{{ entry.url }}"{% if entry.url == page.url %} aria-current="page"{% endif %}>{{ entry.title }}</a></li>
             {%- endfor %}
@@ -42,10 +42,10 @@
 
     <hr class="my-8 h-px bg-gray-400 border-0 dark:bg-gray-100">
 
-    <main id="skip" class="prose max-w-none dark:prose-invert">
+    <main id="skip" class="prose max-w-none flex-grow pb-24 dark:prose-invert">
       {{ content | safe }}
     </main>
 
-    <footer></footer>
+    <footer class="mx-auto pb-4">Copyright {{ copyright.currentYear() }} - James Lawler</footer>
   </body>
 </html>

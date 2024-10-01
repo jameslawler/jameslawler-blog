@@ -2,7 +2,7 @@
 layout: layouts/base.njk
 eleventyNavigation:
   key: Follow Me
-  order: 4
+  order: 5
 ---
 
 ## 👋 Follow Me
