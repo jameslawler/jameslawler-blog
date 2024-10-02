@@ -80,12 +80,35 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addFilter("filterTagList", function filterTagList(tags) {
     return (tags || []).filter(
-      (tag) => ["all", "nav", "post", "posts", "articles"].indexOf(tag) === -1
+      (tag) =>
+        [
+          "all",
+          "nav",
+          "post",
+          "posts",
+          "articles",
+          "projects",
+          "project-active",
+          "project-archived",
+        ].indexOf(tag) === -1
     );
   });
 
   eleventyConfig.addShortcode("currentBuildDate", () => {
     return new Date().toISOString();
+  });
+
+  eleventyConfig.addCollection("articlesByYear", (collection) => {
+    const articles = collection.getFilteredByTag("articles").reverse();
+    const years = articles.map((article) => article.date.getFullYear());
+    const uniqueYears = [...new Set(years)];
+    const articlesByYear = uniqueYears.reduce((prev, year) => {
+      const filteredArticles = articles.filter(
+        (article) => article.date.getFullYear() === year
+      );
+      return [...prev, [year, filteredArticles]];
+    }, []);
+    return articlesByYear;
   });
 
   // Features to make your build faster (when you need them)

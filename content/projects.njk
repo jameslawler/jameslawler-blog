@@ -15,7 +15,7 @@ eleventyNavigation:
 <h3>⚡ Active</h3>
 
 <div class="w-full grid grid-cols-1 gap-4 md:grid-cols-2">
-  {% for project in collections["project-active"] %}
+  {% for project in collections["project-active"] | reverse %}
   <a href="{{ project.url }}">
     <div
       class="relative h-24 border-solid border-2 border-gray-500 border-opacity-100 rounded-md cursor-pointer hover:shadow-xl"
@@ -41,7 +41,7 @@ eleventyNavigation:
 <h3>🗃️ Archived / Lost</h3>
 
 <div class="w-full grid grid-cols-1 gap-4 md:grid-cols-2">
-  {% for project in collections["project-archived"] %}
+  {% for project in collections["project-archived"] | reverse %}
   <a href="{{ project.url }}">
     <div
       class="relative h-24 border-solid border-2 border-gray-500 border-opacity-100 rounded-md cursor-pointer hover:shadow-xl"

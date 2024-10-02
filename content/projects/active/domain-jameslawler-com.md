@@ -1,6 +1,7 @@
 ---
 title: Domain jameslawler.com
 pattern: pattern-dots
+date: 2024-10-01
 ---
 
 I bought my domain jameslawler.com in April 2010 in order to "own" my presence on the Internet. I believe that a lot of people think that having a domain is only for a website, but I use it for a lot more than that.
