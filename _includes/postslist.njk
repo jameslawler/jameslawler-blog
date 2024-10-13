@@ -1,4 +1,5 @@
-{% for group in postslist | groupby("data.year") | objectToArrayReverse %}
+{% for group in postslist | reverse | groupby("data.year") |
+objectToArrayReverse %}
 <h4>{{ group.year }}</h4>
 <ul>
   {% for article in group.articles %}
