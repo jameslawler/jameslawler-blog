@@ -3,29 +3,70 @@ layout: layouts/home.njk
 eleventyNavigation:
   key: Notes
   order: 4
-software_development:
-  - title: JavaScript
-    url: https://notes.jameslawler.com/category/javascript
-    pattern: pattern-dots
-portugal:
-  - title: Portugal Daily Life
-    url: https://notes.jameslawler.com/category/portugal
-    pattern: pattern-lines
-  - title: Portuguese Language
-    url: https://notes.jameslawler.com/category/portuguese-language
-    pattern: pattern-rhombus
+groups:
+  - title: ⚡ Software Development
+    notes:
+      - title: JavaScript
+        url: https://notes.jameslawler.com/category/javascript
+        pattern: pattern-dots
+      - title: Node.js
+        url: https://notes.jameslawler.com/category/nodejs
+        pattern: pattern-triangles
+      - title: React
+        url: https://notes.jameslawler.com/category/react
+        pattern: pattern-isometric
+      - title: Python
+        url: https://notes.jameslawler.com/category/python
+        pattern: pattern-diagonal-lines
+      - title: Bundlers and Compilers
+        url: https://notes.jameslawler.com/category/bundlers-and-compilers
+        pattern: pattern-zigzag
+  - title: 🏗️ Infrastructure
+    notes:
+      - title: System Provisioning
+        url: https://notes.jameslawler.com/category/system-provisioning
+        pattern: pattern-boxes
+      - title: CI/CD
+        url: https://notes.jameslawler.com/category/cicd
+        pattern: pattern-zigzag
+      - title: Monitoring
+        url: https://notes.jameslawler.com/category/monitoring
+        pattern: pattern-moon
+      - title: Cloud Providers
+        url: https://notes.jameslawler.com/category/cloud-providers
+        pattern: pattern-isometric
+  - title: 💡 Leadership
+    notes:
+      - title: Agile Methodology
+        url: https://notes.jameslawler.com/category/agile-methodologies
+        pattern: pattern-boxes
+      - title: System Design
+        url: https://notes.jameslawler.com/category/system-design
+        pattern: pattern-moon
+  - title: 🇵🇹 Portugal
+    notes:
+      - title: Portugal Daily Life
+        url: https://notes.jameslawler.com/category/portugal
+        pattern: pattern-lines
+      - title: Portuguese Language
+        url: https://notes.jameslawler.com/category/portuguese-language
+        pattern: pattern-rhombus
 ---
 
 <h2>📋 Notes</h2>
 
 <div>
-  I have been collecting personal notes in a <a href="https://docusaurus.io/">Docusaurus</a> instance that is running on my <a href="https://notes.jameslawler.com/">notes.jameslawler.com</a> subdomain. Browse the full catalog or use the shortcuts below to go to specific topics.
+  I have been collecting personal notes in a
+  <a href="https://docusaurus.io/">Docusaurus</a> instance that is running on my
+  <a href="https://notes.jameslawler.com/">notes.jameslawler.com</a> subdomain.
+  Browse the full catalog or use the shortcuts below to go to specific topics.
 </div>
 
-<h3>⚡ Software Development</h3>
+{% for group in groups %}
+<h3>{{ group.title }}</h3>
 
 <div class="w-full grid grid-cols-1 gap-4 md:grid-cols-2">
-  {% for note in software_development %}
+  {% for note in group.notes %}
   <a href="{{ note.url }}">
     <div
       class="relative h-24 border-solid border-2 border-gray-500 border-opacity-100 rounded-md cursor-pointer hover:shadow-xl"
@@ -37,7 +78,9 @@ portugal:
       pattern-size-6 pattern-opacity-20 rounded-md"
       ></div>
       <div class="absolute flex items-center w-full h-full">
-        <div class="mx-auto bg-slate-100 py-1 px-4 rounded-md dark:bg-slate-600">
+        <div
+          class="mx-auto bg-slate-100 py-1 px-4 rounded-md dark:bg-slate-600"
+        >
           {{ note.title }}
         </div>
       </div>
@@ -45,27 +88,4 @@ portugal:
   </a>
   {% endfor %}
 </div>
-
-<h3>🇵🇹 Portugal</h3>
-
-<div class="w-full grid grid-cols-1 gap-4 md:grid-cols-2">
-  {% for note in portugal %}
-  <a href="{{ note.url }}">
-    <div
-      class="relative h-24 border-solid border-2 border-gray-500 border-opacity-100 rounded-md cursor-pointer hover:shadow-xl"
-    >
-      <div
-        class="absolute w-full h-full {{
-          note.pattern
-        }} pattern-blue-500 pattern-bg-white 
-      pattern-size-6 pattern-opacity-20 rounded-md"
-      ></div>
-      <div class="absolute flex items-center w-full h-full">
-        <div class="mx-auto bg-slate-100 py-1 px-4 rounded-md dark:bg-slate-600">
-          {{ note.title }}
-        </div>
-      </div>
-    </div>
-  </a>
-  {% endfor %}
-</div>
+{% endfor %}
