@@ -94,21 +94,19 @@ module.exports = function (eleventyConfig) {
     );
   });
 
-  eleventyConfig.addShortcode("currentBuildDate", () => {
-    return new Date().toISOString();
+  eleventyConfig.addFilter("objectToArrayReverse", (obj) => {
+    return Object.keys(obj)
+      .reverse()
+      .map((key) => {
+        return {
+          year: key,
+          articles: obj[key],
+        };
+      });
   });
 
-  eleventyConfig.addCollection("articlesByYear", (collection) => {
-    const articles = collection.getFilteredByTag("articles").reverse();
-    const years = articles.map((article) => article.date.getFullYear());
-    const uniqueYears = [...new Set(years)];
-    const articlesByYear = uniqueYears.reduce((prev, year) => {
-      const filteredArticles = articles.filter(
-        (article) => article.date.getFullYear() === year
-      );
-      return [...prev, [year, filteredArticles]];
-    }, []);
-    return articlesByYear;
+  eleventyConfig.addShortcode("currentBuildDate", () => {
+    return new Date().toISOString();
   });
 
   // Features to make your build faster (when you need them)
