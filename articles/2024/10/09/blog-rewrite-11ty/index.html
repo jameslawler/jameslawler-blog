@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why I rewrote my blog into 11ty</title>
+    <meta name="description" content="Information about rewriting my blog from Ghost to 11ty">
+    <link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="James Lawler">
+    <link rel="alternate" href="/feed/feed.json" type="application/json" title="James Lawler">
+    <meta name="generator" content="Eleventy v2.0.1">
+
+    <link rel="stylesheet" href="/assets/css/tailwind.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script defer data-domain="jameslawler.com" src="https://api.jameslawler.com/js/script.outbound-links.js"></script>
+  </head>
+  <body class="flex flex-col container mx-auto min-h-screen dark:bg-slate-900">
+    <a href="#skip" class="hidden visually-hidden">Skip to main content</a>
+
+    <header>
+      <div class="flex items-center mt-4 md:mt-12">
+        <div class="flex flex-col flex-1">
+          <a href="/" class="text-3xl pb-6 font-bold dark:text-gray-100">James Lawler</a>
+          <nav>
+            <h2 class="hidden visually-hidden">Top level navigation menu</h2>
+            <ul class="flex flex-row gap-4 md:gap-8">
+              <li class="dark:text-gray-100"><a href="/">Home</a></li>
+              <li class="dark:text-gray-100"><a href="/articles/">Articles</a></li>
+              <li class="dark:text-gray-100"><a href="/projects/">Projects</a></li>
+              <li class="dark:text-gray-100"><a href="/notes/">Notes</a></li>
+              <li class="dark:text-gray-100"><a href="/follow-me/">Follow Me</a></li>
+            </ul>
+          </nav>
+        </div>
+        <img src="/img/james-lawler.jpg" class="hidden size-20 rounded-full md:block" />
+      </div>
+      
+    </header>
+
+    <hr class="my-8 h-px bg-gray-400 border-0 dark:bg-gray-100">
+
+    <main id="skip" class="prose max-w-none flex-grow pb-24 dark:prose-invert">
+      
+<h1 class="text-3xl font-bold mb-4 dark:text-gray-100">Why I rewrote my blog into 11ty</h1>
+
+<div class="flex flex-row gap-4">
+  <time
+    class="dark:text-gray-100"
+    datetime="2024-10-09"
+    >09 October 2024</time
+  >
+  <div
+    class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100"
+  >
+    <a href="/tags/ghost/" class="post-tag">ghost</a>
+  </div>
+</div>
+
+<p>The website running at jameslawler.com has changed many times over the years. Most recently I was using Ghost as platform for managing my blog posts and using GitHub as the website host. I wrote a few <a href="/tags/ghost">blog posts</a> about the process.</p>
+<p>The Ghost platform was a nice simple web interface to work with and it could run completely in Docker, so it didn't need to mess up my host machine. However over time it became more of a burden for my simple website.</p>
+<h2>Disadvantages</h2>
+<p>As I was running Ghost locally in a Docker container, I encountered the following issues;</p>
+<ul>
+<li>I frequently had problems logging in and had to remotely connect into the MySQL instance of Ghost within the Docker image to fix the credentials.</li>
+<li>I felt like I couldn't do much cutomization to the content of the pages / posts.</li>
+<li>I prefer the clean structure of a Markdown text file over a proprietry format provided by Ghost.</li>
+</ul>
+<h2>What I wanted</h2>
+<p>For a while It was perfectly fine using Ghost, but as the issues above because more frequent I found myself reluctant to want to make updates to my website. What I really wanted was something that could do the following;</p>
+<ul>
+<li>Be a static website that I can host in many places for free without server maintenance</li>
+<li>Work with Markdown files</li>
+<li>Work with Frontmatter format in markdown files so I can have simple template data defined and render it to the page</li>
+<li>Support templating</li>
+<li>Work with <a href="https://tailwindcss.com/">TailwindCSS</a> for design implementation</li>
+</ul>
+<h2>What I changed to</h2>
+<p>In the past I have used <a href="https://www.11ty.dev/">11ty</a> and found it to be a good solution to all of those issues above, and so I decided to switch my blog over to a simple 11ty blog structure.</p>
+<p>By defualt 11ty provides everything on the list, except for TailwindCSS support.</p>
+<h2>Adding TailwindCSS</h2>
+<p>To add TailwindCSS support, I followed a <a href="https://dev.to/psypher1/lets-learn-11ty-part-7-adding-tailwind-5cdh">simple guide</a> I found and then completely stripped out any existing css files from the 11ty project to be sure everything was TailwindCSS driven for the front end design.</p>
+<h2>Conclusion</h2>
+<p>At the moment I am really happy with the <a href="https://github.com/jameslawler/jameslawler-blog">outcome</a>. I have a very simple repository in GitHub that stores all of my content in markdown files. I only needed to create a few simple templates for generating the HTML files.</p>
+<p>Any time I make an update to the repostiory, it automatically builds in GitHub Actions and publishes the updates to the GitHub Pages.</p>
+<p>Overall the maintenance is light-weight and my content is fully portable if I want to move to another system in the future.</p>
+
+<ul>
+  <li>
+    Previous: <a href="/articles/2021/12/17/private-repository-to-build-and-deploy-ghost-blog/">Private Repository to Build and Deploy Ghost Blog</a>
+  </li>
+  
+  <li>
+    Next: <a href="/articles/2024/10/13/radio-framework-system-design/">System Design using the RADIO structure</a>
+  </li>
+  
+</ul>
+
+    </main>
+
+    <footer class="mx-auto pb-4">Copyright 2024 - James Lawler</footer>
+  </body>
+</html>

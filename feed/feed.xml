@@ -32,6 +32,41 @@
 	</entry>
 	
 	<entry>
+		<title>Why I rewrote my blog into 11ty</title>
+		<link href="https://www.jameslawler.com/articles/2024/10/09/blog-rewrite-11ty/"/>
+		<updated>2024-10-09T00:00:00Z</updated>
+		<id>https://www.jameslawler.com/articles/2024/10/09/blog-rewrite-11ty/</id>
+		<content type="html">&lt;p&gt;The website running at jameslawler.com has changed many times over the years. Most recently I was using Ghost as platform for managing my blog posts and using GitHub as the website host. I wrote a few &lt;a href=&quot;https://www.jameslawler.com/tags/ghost&quot;&gt;blog posts&lt;/a&gt; about the process.&lt;/p&gt;
+&lt;p&gt;The Ghost platform was a nice simple web interface to work with and it could run completely in Docker, so it didn&#39;t need to mess up my host machine. However over time it became more of a burden for my simple website.&lt;/p&gt;
+&lt;h2&gt;Disadvantages&lt;/h2&gt;
+&lt;p&gt;As I was running Ghost locally in a Docker container, I encountered the following issues;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;I frequently had problems logging in and had to remotely connect into the MySQL instance of Ghost within the Docker image to fix the credentials.&lt;/li&gt;
+&lt;li&gt;I felt like I couldn&#39;t do much cutomization to the content of the pages / posts.&lt;/li&gt;
+&lt;li&gt;I prefer the clean structure of a Markdown text file over a proprietry format provided by Ghost.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;What I wanted&lt;/h2&gt;
+&lt;p&gt;For a while It was perfectly fine using Ghost, but as the issues above because more frequent I found myself reluctant to want to make updates to my website. What I really wanted was something that could do the following;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Be a static website that I can host in many places for free without server maintenance&lt;/li&gt;
+&lt;li&gt;Work with Markdown files&lt;/li&gt;
+&lt;li&gt;Work with Frontmatter format in markdown files so I can have simple template data defined and render it to the page&lt;/li&gt;
+&lt;li&gt;Support templating&lt;/li&gt;
+&lt;li&gt;Work with &lt;a href=&quot;https://tailwindcss.com/&quot;&gt;TailwindCSS&lt;/a&gt; for design implementation&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;What I changed to&lt;/h2&gt;
+&lt;p&gt;In the past I have used &lt;a href=&quot;https://www.11ty.dev/&quot;&gt;11ty&lt;/a&gt; and found it to be a good solution to all of those issues above, and so I decided to switch my blog over to a simple 11ty blog structure.&lt;/p&gt;
+&lt;p&gt;By defualt 11ty provides everything on the list, except for TailwindCSS support.&lt;/p&gt;
+&lt;h2&gt;Adding TailwindCSS&lt;/h2&gt;
+&lt;p&gt;To add TailwindCSS support, I followed a &lt;a href=&quot;https://dev.to/psypher1/lets-learn-11ty-part-7-adding-tailwind-5cdh&quot;&gt;simple guide&lt;/a&gt; I found and then completely stripped out any existing css files from the 11ty project to be sure everything was TailwindCSS driven for the front end design.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;At the moment I am really happy with the &lt;a href=&quot;https://github.com/jameslawler/jameslawler-blog&quot;&gt;outcome&lt;/a&gt;. I have a very simple repository in GitHub that stores all of my content in markdown files. I only needed to create a few simple templates for generating the HTML files.&lt;/p&gt;
+&lt;p&gt;Any time I make an update to the repostiory, it automatically builds in GitHub Actions and publishes the updates to the GitHub Pages.&lt;/p&gt;
+&lt;p&gt;Overall the maintenance is light-weight and my content is fully portable if I want to move to another system in the future.&lt;/p&gt;
+</content>
+	</entry>
+	
+	<entry>
 		<title>Private Repository to Build and Deploy Ghost Blog</title>
 		<link href="https://www.jameslawler.com/articles/2021/12/17/private-repository-to-build-and-deploy-ghost-blog/"/>
 		<updated>2021-12-17T00:00:00Z</updated>
