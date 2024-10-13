@@ -4,11 +4,32 @@
 	<subtitle>I am writing about my experiences as a naval navel-gazer.</subtitle>
 	<link href="https://www.jameslawler.com/feed/feed.xml" rel="self"/>
 	<link href="https://www.jameslawler.com/"/>
-	<updated>2021-12-17T00:00:00Z</updated>
+	<updated>2024-10-13T00:00:00Z</updated>
 	<id>https://www.jameslawler.com/</id>
 	<author>
 		<name>James Lawler</name>
 	</author>
+	
+	<entry>
+		<title>System Design using the RADIO structure</title>
+		<link href="https://www.jameslawler.com/articles/2024/10/13/radio-framework-system-design/"/>
+		<updated>2024-10-13T00:00:00Z</updated>
+		<id>https://www.jameslawler.com/articles/2024/10/13/radio-framework-system-design/</id>
+		<content type="html">&lt;p&gt;During system design sessions for a project it is important to cover all your bases. During the initial phase when you have contact with the stakeholder of the project, it is important to make sure you ask enough questions to be able to fully undertand the requirements and make a proposal for the technical design.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;RADIO&lt;/strong&gt; stands for&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Requirements&lt;/li&gt;
+&lt;li&gt;Architecture / High Level&lt;/li&gt;
+&lt;li&gt;Data model&lt;/li&gt;
+&lt;li&gt;Interface definition (API)&lt;/li&gt;
+&lt;li&gt;Optimizations&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This structure is typically used for interviews with system design questions, but can be applied to daily work tasks.&lt;/p&gt;
+&lt;p&gt;I first found the RADIO structure on the &lt;a href=&quot;https://www.greatfrontend.com/system-design/framework&quot;&gt;Great Frontend&lt;/a&gt; website and it provides a thorough description of how to use it. Originally it is defined for front end tasks, but in my opinion it is quite good for any type of system design task.&lt;/p&gt;
+&lt;p&gt;In my &lt;a href=&quot;https://notes.jameslawler.com/category/system-design&quot;&gt;Docusauraus&lt;/a&gt; instance I have started to write up system designs using this RADIO structure. I create these system designs just for learning and fun aand I don&#39;t claim them to be the &amp;quot;perfect&amp;quot; design.&lt;/p&gt;
+&lt;p&gt;My first one is a simple &lt;a href=&quot;https://notes.jameslawler.com/software-engineering/system-design/rate-limiter&quot;&gt;Rate Limiter&lt;/a&gt; system design, and I will add more over time as learning exercises.&lt;/p&gt;
+</content>
+	</entry>
 	
 	<entry>
 		<title>Private Repository to Build and Deploy Ghost Blog</title>
