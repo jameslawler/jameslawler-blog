@@ -2,6 +2,9 @@
 title: Domain jameslawler.com
 pattern: pattern-dots
 date: 2024-10-01
+stack:
+  - github_pages
+  - github_actions
 ---
 
 I bought my domain jameslawler.com in April 2010 in order to "own" my presence on the Internet. I believe that a lot of people think that having a domain is only for a website, but I use it for a lot more than that.
@@ -12,7 +15,7 @@ I used to have a gmail account, but once I bought my domain, I setup all email t
 
 This provides me with a **major** benefit of email server portability. At some point I decided to minimise my usage of Google products from fear of being locked out of my account and losing all my email and contacts. I moved to a paid email service, so that I could feel comfortable being the customer and not being the product.
 
-The classic saying still hold up.
+The classic saying still holds up.
 
 > If you are not paying for it, you're not the customer; you're the product being sold.
 

@@ -1,7 +1,14 @@
 ---
 layout: layouts/base.njk
+badges_source: https://github.com/inttter/md-badges
 ---
 
 <h1 class="text-3xl font-bold mb-4 dark:text-gray-100">{{ title }}</h1>
+
+{% if stack %}
+<div class="flex flex-row flex-wrap gap-2 my-6">
+  {% include "techstack.njk" %}
+</div>
+{% endif %}
 
 {{ content | safe }}

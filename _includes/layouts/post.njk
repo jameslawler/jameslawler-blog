@@ -4,6 +4,12 @@ layout: layouts/base.njk
 
 <h1 class="text-3xl font-bold mb-4 dark:text-gray-100">{{ title }}</h1>
 
+{% if stack %}
+<div class="flex flex-row flex-wrap gap-2 my-6">
+  {% include "techstack.njk" %}
+</div>
+{% endif %}
+
 <div class="flex flex-row gap-4">
   <time
     class="dark:text-gray-100"

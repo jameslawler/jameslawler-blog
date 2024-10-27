@@ -4,6 +4,11 @@ description: Information about rewriting my blog from Ghost to 11ty
 date: 2024-10-09
 tags:
   - ghost
+stack:
+  - 11ty
+  - tailwindcss
+  - github_pages
+  - github_actions
 ---
 
 The website running at jameslawler.com has changed many times over the years. Most recently I was using Ghost as platform for managing my blog posts and using GitHub as the website host. I wrote a few [blog posts](/tags/ghost) about the process.
