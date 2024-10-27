@@ -46,7 +46,82 @@
       
 <h1 class="text-3xl font-bold mb-4 dark:text-gray-100">Personal Notes</h1>
 
-<p>In Progress</p>
+
+<div class="flex flex-row flex-wrap gap-2 my-6">
+      
+<a href="https://docusaurus.io/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/Docusaurus-3ECC5F?logo=docusaurus&logoColor=fff"
+    alt="Docusaurus"
+/></a>
+     
+<a href="https://pages.github.com/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/GitHub%20Pages-121013?logo=github&logoColor=white"
+    alt="GitHub Pages"
+  />
+</a>
+        
+<a href="https://github.com/features/actions">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&logoColor=white"
+    alt="GitHub Actions"
+/></a>
+    
+
+</div>
+
+
+<p>The <a href="https:notes.jameslawler.com/">Personal Notes</a> project is essentially a personal wiki where I can keep my collection of notes, ideas, and guides. I wanted a simply to manage set of markdown files and settled on using Docusauraus as it has many features built in by default.</p>
+<h2>Docusaurus</h2>
+<p><a href="https://docusaurus.io">Docusaurus</a> is a project created by Meta as a platform to document software projects. The main benefits it provides are;</p>
+<ul>
+<li>source control maintained (no database)</li>
+<li>markdown based documentation</li>
+<li>automatic generation of structure based on folder source code structure</li>
+</ul>
+<h2>How I set up the project</h2>
+<p>Follow the <a href="https://docusaurus.io/docs/installation">installation and setup instructions</a> on the Docusaurus website to see the most up to date instructions.</p>
+<p>Once the project is working locally, I made it build and deploy using GitHub Actions to GutHub Pages. See below for the sample GitHub Actions yaml file that will build an deploy the project.</p>
+<pre class="language-yaml" tabindex="0"><code class="language-yaml"><span class="token key atrule">name</span><span class="token punctuation">:</span> Build and Deploy
+<span class="token key atrule">on</span><span class="token punctuation">:</span>
+  <span class="token key atrule">push</span><span class="token punctuation">:</span>
+    <span class="token key atrule">branches</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> main
+<span class="token key atrule">permissions</span><span class="token punctuation">:</span>
+  <span class="token key atrule">contents</span><span class="token punctuation">:</span> read
+  <span class="token key atrule">pages</span><span class="token punctuation">:</span> write
+  <span class="token key atrule">id-token</span><span class="token punctuation">:</span> write
+<span class="token key atrule">concurrency</span><span class="token punctuation">:</span>
+  <span class="token key atrule">group</span><span class="token punctuation">:</span> <span class="token string">"pages"</span>
+  <span class="token key atrule">cancel-in-progress</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+<span class="token key atrule">jobs</span><span class="token punctuation">:</span>
+  <span class="token key atrule">build-and-deploy</span><span class="token punctuation">:</span>
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token key atrule">name</span><span class="token punctuation">:</span> github<span class="token punctuation">-</span>pages
+      <span class="token key atrule">url</span><span class="token punctuation">:</span> $
+    <span class="token key atrule">runs-on</span><span class="token punctuation">:</span> ubuntu<span class="token punctuation">-</span>latest
+    <span class="token key atrule">steps</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Checkout
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/checkout@v3
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Install and Build
+        <span class="token key atrule">run</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string">
+          npm ci
+          npm run build</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Setup Pages
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/configure<span class="token punctuation">-</span>pages@v3
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Upload artifact
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/upload<span class="token punctuation">-</span>pages<span class="token punctuation">-</span>artifact@v2
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token key atrule">path</span><span class="token punctuation">:</span> <span class="token string">"build"</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Deploy to GitHub Pages 🚀
+        <span class="token key atrule">id</span><span class="token punctuation">:</span> deployment
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/deploy<span class="token punctuation">-</span>pages@v2</code></pre>
+<h2>Content</h2>
+<p>I am using the personal notes project not just to store notes about software development, but also topics like leanguages that I am learning, day to day situations like dealing with bureaucratic processes in a foreign country.</p>
 
 
     </main>

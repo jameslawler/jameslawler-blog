@@ -26,7 +26,7 @@
 &lt;/ul&gt;
 &lt;p&gt;This structure is typically used for interviews with system design questions, but can be applied to daily work tasks.&lt;/p&gt;
 &lt;p&gt;I first found the RADIO structure on the &lt;a href=&quot;https://www.greatfrontend.com/system-design/framework&quot;&gt;Great Frontend&lt;/a&gt; website and it provides a thorough description of how to use it. Originally it is defined for front end tasks, but in my opinion it is quite good for any type of system design task.&lt;/p&gt;
-&lt;p&gt;In my &lt;a href=&quot;https://notes.jameslawler.com/category/system-design&quot;&gt;Docusauraus&lt;/a&gt; instance I have started to write up system designs using this RADIO structure. I create these system designs just for learning and fun aand I don&#39;t claim them to be the &amp;quot;perfect&amp;quot; design.&lt;/p&gt;
+&lt;p&gt;In my &lt;a href=&quot;https://notes.jameslawler.com/category/system-design&quot;&gt;Docusauraus&lt;/a&gt; instance I have started to write up system designs using this RADIO structure. I create these system designs just for learning and fun and I don&#39;t claim them to be the &amp;quot;perfect&amp;quot; design.&lt;/p&gt;
 &lt;p&gt;My first one is a simple &lt;a href=&quot;https://notes.jameslawler.com/software-engineering/system-design/rate-limiter&quot;&gt;Rate Limiter&lt;/a&gt; system design, and I will add more over time as learning exercises.&lt;/p&gt;
 </content>
 	</entry>
