@@ -14,6 +14,8 @@ The website content has not been updated since 2020, but the old content is stil
 
 ## Website
 
+{% image "./portuguese-from-portugal.png", "Portuguese from Portugal article" %}
+
 The website was originally created as a custom React website in a micro-service architecture. I built a customer facing part and an admin part. I also had services to provide content, a MongoDB database, a RSS feed service and so on. It worked quite well, but became a time consuming burden to maintain all the services and versions.
 
 A few years after launching the original version, I converted the site to be a statically hosted [Ghost](https://www.ghost.org) website. The Ghost platform provided to me the customer facing and admin portions of the website. I could also replace all of the services and use some trickery in the Ghost setup to mimick the same functionality.
