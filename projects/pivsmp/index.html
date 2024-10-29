@@ -47,8 +47,67 @@
 <h1 class="text-3xl font-bold mb-4 dark:text-gray-100">PiVSMP</h1>
 
 
+<div class="flex flex-row flex-wrap gap-2 my-6">
+          
+<a href="https://www.python.org/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=fff"
+    alt="Python"
+/></a>
+            
+<a href="https://www.raspberrypi.com/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/System-Raspberry_Pi-red"
+    alt="Raspberry Pi"
+/></a>
+  
 
-<p>In Progress</p>
+</div>
+
+
+<p>PiVSMP is the short name of a python project I built called Pi Very Slow Movie Player. There already existed such a concept of using an e-ink display attached to a raspberry pi to display frames from a movie, but I wanted to create a simple to use tool similar to <a href="https://www.pivpn.io/">PiVPN</a> to replicate the functionality.</p>
+<p>Unfortunately my e-ink display cable snapped and so I am unable to use it anymore, but the code is still available.</p>
+<h2>Code</h2>
+<p>The project's code is available on my GitHub in the <a href="https://github.com/jameslawler/pivsmp">PiVSMP repository</a>. Written in Python, the project is a command line interface that sits on top of the <a href="https://www.waveshare.com/epaper">waveshare</a> driver, which powers the e-ink display.</p>
+<h2>Installation</h2>
+<p>By following the PiVPN approach, the project is installable via a single bash command</p>
+<pre class="language-bash" tabindex="0"><code class="language-bash"><span class="token function">bash</span> <span class="token operator">&lt;</span><span class="token punctuation">(</span><span class="token function">curl</span> <span class="token parameter variable">-s</span> https://raw.githubusercontent.com/jameslawler/pivsmp/main/install.sh<span class="token punctuation">)</span></code></pre>
+<h2>Usage</h2>
+<p>Run <code>pivsmp</code> to see all commands provided by the program.</p>
+<p>Copy a movie to your <code>~/.pivsmp/movies</code> folder. The movie must be inside a folder with the name of the movie. You can use a SFTP program on your main machine to copy the movie to the Pi.</p>
+<p>In your Pi console run <code>pivsmp configure</code>.</p>
+<ul>
+<li>
+<p>Select your e-paper display</p>
+</li>
+<li>
+<p>Select the movie to display</p>
+</li>
+<li>
+<p>Choose a frame to start on</p>
+</li>
+<li>
+<p>Choose a delay seconds between frames</p>
+</li>
+<li>
+<p>Start the movie by running <code>pivsmp start</code></p>
+</li>
+<li>
+<p>Verify the status using <code>pivsmp status</code></p>
+</li>
+</ul>
+<h2>Architecture</h2>
+<p>Within the project repository, the <code>src</code> folder contains a cleanly organised set of python scripts to run the program.</p>
+<p>The program uses a few 3rd party libraries to make the project work.</p>
+<ul>
+<li><a href="https://pypi.org/project/questionary/"><code>questionary</code></a> is used to provide a clean command line interface with a question and answer flow</li>
+<li><a href="https://pypi.org/project/ffmpeg-python/"><code>ffmpeg</code></a> is used to extract frames from the video file</li>
+</ul>
+<p><picture><source type="image/avif" srcset="/img/mQyhzypE2c-561.avif 561w"><source type="image/webp" srcset="/img/mQyhzypE2c-561.webp 561w"><img alt="PiVSMP architecture" loading="lazy" decoding="async" src="/img/mQyhzypE2c-561.png" width="561" height="371"></picture></p>
+<h2>Future</h2>
+<p>This project is in a functioning state and works with a variety of different waveshare drivers to support different e-ink screen sizes. As I no longer have access to a working e-ink display it is unlikely I will be adding further features to the project.</p>
 
 
     </main>

@@ -47,8 +47,58 @@
 <h1 class="text-3xl font-bold mb-4 dark:text-gray-100">Language Wallpapers</h1>
 
 
+<div class="flex flex-row flex-wrap gap-2 my-6">
+             
+<a href="https://nodejs.org/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/Node.js-6DA55F?logo=node.js&logoColor=white"
+    alt="Node.js"
+/></a>
 
-<p>In Progress</p>
+
+</div>
+
+
+<p>Language Wallpapers is a simple Node.js project I built which could combine images and words to help me to learn new Portuguese vocabulary.</p>
+<h2>How it works</h2>
+<p>The project used the following.</p>
+<ul>
+<li><a href="https://unsplash.com/">unsplash</a> for free high-quality images</li>
+<li><a href="https://www.npmjs.com/package/jimp">jimp</a> npm package for combining the original image with a transparent banner and with text on top</li>
+</ul>
+<p>The proccess was quite simple.</p>
+<ol>
+<li>Read a json file which lists a set of vocabulary and an unsplash image id</li>
+<li>Loop the list</li>
+<li>Download the unsplash image</li>
+<li>Resize the image</li>
+<li>Attach the transparent banner to the image and place the vocabulary text on top</li>
+<li>Save the resultant image</li>
+</ol>
+<p>The JSON data looked like this.</p>
+<pre class="language-json" tabindex="0"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"places"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"filename"</span><span class="token operator">:</span> <span class="token string">"estádio"</span><span class="token punctuation">,</span>
+      <span class="token property">"english"</span><span class="token operator">:</span> <span class="token string">"stadium"</span><span class="token punctuation">,</span>
+      <span class="token property">"unsplashId"</span><span class="token operator">:</span> <span class="token string">"m6OWr3OP4do"</span><span class="token punctuation">,</span>
+      <span class="token property">"word"</span><span class="token operator">:</span> <span class="token string">"o estádio / os estádios"</span><span class="token punctuation">,</span>
+      <span class="token property">"sentence"</span><span class="token operator">:</span> <span class="token string">"Hoje há um jogo no estádio"</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"filename"</span><span class="token operator">:</span> <span class="token string">"universidade"</span><span class="token punctuation">,</span>
+      <span class="token property">"english"</span><span class="token operator">:</span> <span class="token string">"university"</span><span class="token punctuation">,</span>
+      <span class="token property">"unsplashId"</span><span class="token operator">:</span> <span class="token string">"d6ebY-faOO0"</span><span class="token punctuation">,</span>
+      <span class="token property">"word"</span><span class="token operator">:</span> <span class="token string">"a universidade / as universidades"</span><span class="token punctuation">,</span>
+      <span class="token property">"sentence"</span><span class="token operator">:</span> <span class="token string">"Eu estudo informática na universidade"</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The output wallpapers looked like this.</p>
+<p><picture><source type="image/avif" srcset="/img/XDokbn4jeR-2560.avif 2560w"><source type="image/webp" srcset="/img/XDokbn4jeR-2560.webp 2560w"><img alt="Example wallpapers" loading="lazy" decoding="async" src="/img/XDokbn4jeR-2560.jpeg" width="2560" height="1440"></picture></p>
+<h2>Where to use the wallpapers</h2>
+<p>I would save the wallpapers into a folder and set up my Windows machine to automatically rotate the wallpapers every hour. I used this as a kind of subliminal learning method.</p>
 
 
     </main>
