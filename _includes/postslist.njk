@@ -1,9 +1,9 @@
 {% for group in postslist | reverse | groupby("data.year") |
 objectToArrayReverse %}
-<h4>{{ group.year }}</h4>
+<h3>{{ group.year }}</h4>
 <ul>
   {% for article in group.articles %}
-  <li class="article">
+  <li>
     <a href="{{ article.url | url }}">{{ article.data.title }}</a>
   </li>
   {% endfor %}

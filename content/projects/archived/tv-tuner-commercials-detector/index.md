@@ -14,7 +14,7 @@ The project idea was to be able to record live TV streams from my DVB-T card, an
 
 ## Record stream
 
-The DirectX tool back in 2004 provided a GUI to be able to create a pipeline of filters from teh TV input to pass it through various filters.
+The DirectX tool back in 2004 provided a GUI to be able to create a pipeline of filters from the TV input to pass it through various filters.
 
 {% image "./directx-filter.png", "DirectX Filter" %}
 

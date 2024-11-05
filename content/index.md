@@ -9,7 +9,7 @@ numberOfLatestPostsToShow: 3
 ## 👋 About Me
 
 <div class="flex flex-col items-center md:hidden">
-  <img src="/img/james-lawler.jpg" class="size-28 rounded-full" />
+  <img src="/img/james-lawler.jpg" class="size-28 rounded-full" alt="James Lawler" />
 </div>
 
 My name is James Lawler and I am a full stack software developer. I currently focus on the JavaScript tech stack and micro-service architecture. This is my personal website which I use to keep track of things I have done over time and write down my [notes](/notes) on various topics. It is easy to lose track of what you have learnt and accomplished, and this site will be a record of my time as a developer.
@@ -19,11 +19,11 @@ My name is James Lawler and I am a full stack software developer. I currently fo
 {% set postslist = collections.articles | head(-1 * numberOfLatestPostsToShow) %}
 
 <ul reversed>
-{% for post in postslist | reverse %}
+{%- for post in postslist | reverse %}
 	<li>
 		<a href="{{ post.url }}">{{ post.data.title }}</a>
 	</li>
-{% endfor %}
+{%- endfor %}
 </ul>
 
 See [all articles](/articles/).
