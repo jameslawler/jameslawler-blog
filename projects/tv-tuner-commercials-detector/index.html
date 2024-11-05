@@ -26,16 +26,16 @@
           <a href="/" class="text-3xl pb-6 font-bold dark:text-gray-100">James Lawler</a>
           <nav>
             <h2 class="hidden visually-hidden">Top level navigation menu</h2>
-            <ul class="flex flex-row gap-4 md:gap-8">
-              <li class="dark:text-gray-100"><a href="/">Home</a></li>
-              <li class="dark:text-gray-100"><a href="/articles/">Articles</a></li>
-              <li class="dark:text-gray-100"><a href="/projects/">Projects</a></li>
-              <li class="dark:text-gray-100"><a href="/notes/">Notes</a></li>
-              <li class="dark:text-gray-100"><a href="/follow-me/">Follow Me</a></li>
+            <ul class="flex flex-row flex-wrap gap-2 md:gap-8">
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4" href="/">Home</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4" href="/articles/">Articles</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4" href="/projects/">Projects</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4" href="/notes/">Notes</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4" href="/follow-me/">Follow Me</a></li>
             </ul>
           </nav>
         </div>
-        <img src="/img/james-lawler.jpg" class="hidden size-20 rounded-full md:block" />
+        <img src="/img/james-lawler.jpg" class="hidden size-20 rounded-full md:block" alt="James Lawler" />
       </div>
       
     </header>
@@ -53,7 +53,7 @@
 <h2>Idea</h2>
 <p>The project idea was to be able to record live TV streams from my DVB-T card, analyse the stream and try to predict where the TV commercials are.</p>
 <h2>Record stream</h2>
-<p>The DirectX tool back in 2004 provided a GUI to be able to create a pipeline of filters from teh TV input to pass it through various filters.</p>
+<p>The DirectX tool back in 2004 provided a GUI to be able to create a pipeline of filters from the TV input to pass it through various filters.</p>
 <p><picture><source type="image/avif" srcset="/img/rDwuMS5l9I-685.avif 685w"><source type="image/webp" srcset="/img/rDwuMS5l9I-685.webp 685w"><img alt="DirectX Filter" loading="lazy" decoding="async" src="/img/rDwuMS5l9I-685.png" width="685" height="220"></picture></p>
 <h2>Commercial detection</h2>
 <p>To try and detect commericals, I used various analysis techniques like.</p>
