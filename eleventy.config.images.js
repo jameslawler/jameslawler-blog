@@ -26,6 +26,7 @@ module.exports = function(eleventyConfig) {
 		// Warning: Avif can be resource-intensive so take care!
 		let formats = ["avif", "webp", "auto"];
 		let input;
+		
 		if(isFullUrl(src)) {
 			input = src;
 		} else {
