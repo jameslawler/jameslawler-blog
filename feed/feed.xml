@@ -4,11 +4,77 @@
 	<subtitle>I am writing about my experiences as a naval navel-gazer.</subtitle>
 	<link href="https://www.jameslawler.com/feed/feed.xml" rel="self"/>
 	<link href="https://www.jameslawler.com/"/>
-	<updated>2024-10-13T00:00:00Z</updated>
+	<updated>2025-02-22T00:00:00Z</updated>
 	<id>https://www.jameslawler.com/</id>
 	<author>
 		<name>James Lawler</name>
 	</author>
+	
+	<entry>
+		<title>How I created a daily game</title>
+		<link href="https://www.jameslawler.com/articles/2025/02/22/how-I-created-a-daily-game/"/>
+		<updated>2025-02-22T00:00:00Z</updated>
+		<id>https://www.jameslawler.com/articles/2025/02/22/how-I-created-a-daily-game/</id>
+		<content type="html">&lt;p&gt;To help me learn European Portuguese and the genders of the vocabulary I set myself a goal of creating some web-based games. The games would ideally follow a daily concept, in the style of Wordle. Each day the game will reset to a new set of words, and everyone playing the game would see the same set of words.&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://www.jameslawler.com/img/h70y2JGudJ-1024.avif 1024w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://www.jameslawler.com/img/h70y2JGudJ-1024.webp 1024w&quot;&gt;&lt;img alt=&quot;Daily Game&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://www.jameslawler.com/img/h70y2JGudJ-1024.png&quot; width=&quot;1024&quot; height=&quot;1024&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;h2&gt;Project Structure&lt;/h2&gt;
+&lt;p&gt;The &lt;a href=&quot;https://github.com/jameslawler/daily-pfp&quot;&gt;project&lt;/a&gt; is a standard NextJs website, built into static files and hosted on GitHub Pages. It is using ReactJs, TypeScript and TailwindCSS.&lt;/p&gt;
+&lt;h2&gt;Daily Game Alogirthm&lt;/h2&gt;
+&lt;p&gt;The method of randomizing the game each day is through the use of a hash on today&#39;s date. The has is then fed into an algorithm which sorts the array of questions in a predictable order based on the hash.&lt;/p&gt;
+&lt;pre class=&quot;language-ts&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-ts&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; shuffleArray &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;array&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; GameData&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; seed&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; GameData&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; currentIndex &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; array&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;length&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    temporaryValue&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    randomIndex&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  seed &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; seed &lt;span class=&quot;token operator&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token function-variable function&quot;&gt;random&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; x &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; Math&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;sin&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;seed&lt;span class=&quot;token operator&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; x &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt; Math&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;floor&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;token keyword&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;!==&lt;/span&gt; currentIndex&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    randomIndex &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; Math&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;floor&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; currentIndex&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    currentIndex &lt;span class=&quot;token operator&quot;&gt;-=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+    temporaryValue &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; array&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;currentIndex&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    array&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;currentIndex&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; array&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;randomIndex&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    array&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;randomIndex&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; temporaryValue&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; array&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The date is fed into the above function as a number by using the &lt;code&gt;date.getTime()&lt;/code&gt; function and the algorithm performs a &lt;code&gt;Math.sin()&lt;/code&gt; call using the seed value provided. The array is then shuffled item by item using the index randomizer until all items have been moved.&lt;/p&gt;
+&lt;p&gt;The benefit of this algorithm is that as long as the length of the array stays the same, the array can be predictably sorted based on any date. This allows looking back in time to see the different games that were played without needing to store them.&lt;/p&gt;
+&lt;p&gt;In case additional words are added to the game in the future, this can still be maintained by creating separate arrays which are date based, and only dates after the date based array are concatenated together.&lt;/p&gt;
+&lt;h2&gt;Statistics Storage&lt;/h2&gt;
+&lt;p&gt;The browser&#39;s local storage is used to store previous game information. Current two items are stored in the local storage;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;gender-game&lt;/code&gt;: This key stores&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;the date of last game&lt;/li&gt;
+&lt;li&gt;the question index of the current question in the current game&lt;/li&gt;
+&lt;li&gt;the game state of the current game&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;&lt;code&gt;gender-game-stats&lt;/code&gt;: This key stores&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;the overall top score&lt;/li&gt;
+&lt;li&gt;past games array containing the date of the game and score achieved&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;By combining all of this information from the local storage, the statistics page within the game can display the player their;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;number of days played&lt;/li&gt;
+&lt;li&gt;highest score&lt;/li&gt;
+&lt;li&gt;longest streak of days played in a row&lt;/li&gt;
+&lt;li&gt;a nice GitHub style heatmap of their score progression over time&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source type=&quot;image/avif&quot; srcset=&quot;https://www.jameslawler.com/img/96nDkD3w83-400.avif 400w&quot;&gt;&lt;source type=&quot;image/webp&quot; srcset=&quot;https://www.jameslawler.com/img/96nDkD3w83-400.webp 400w&quot;&gt;&lt;img alt=&quot;Daily Game Statistics&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; src=&quot;https://www.jameslawler.com/img/96nDkD3w83-400.png&quot; width=&quot;400&quot; height=&quot;368&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;h2&gt;Project Future&lt;/h2&gt;
+&lt;p&gt;I would like to keep the same game structure, but switch the content so I can train myself on other Portuguese grammar topics, like verb conjugations.&lt;/p&gt;
+</content>
+	</entry>
 	
 	<entry>
 		<title>System Design using the RADIO structure</title>

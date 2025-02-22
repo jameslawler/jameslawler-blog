@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How I created a daily game</title>
+    <meta name="description" content="Information about constructing a daily game">
+    <link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="James Lawler">
+    <link rel="alternate" href="/feed/feed.json" type="application/json" title="James Lawler">
+    <meta name="generator" content="Eleventy v2.0.1">
+
+    <link rel="stylesheet" href="/assets/css/tailwind.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script defer data-domain="jameslawler.com" src="https://api.jameslawler.com/js/script.outbound-links.js"></script>
+  </head>
+  <body class="flex flex-col container mx-auto min-h-screen dark:bg-slate-900">
+    <a href="#skip" class="hidden visually-hidden">Skip to main content</a>
+
+    <header>
+      <div class="flex items-center mt-4 md:mt-12">
+        <div class="flex flex-col flex-1">
+          <a href="/" class="text-3xl pb-6 font-bold dark:text-gray-100">James Lawler</a>
+          <nav>
+            <h2 class="hidden visually-hidden">Top level navigation menu</h2>
+            <ul class="flex flex-row flex-wrap gap-2 md:gap-8">
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/">Home</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/articles/">Articles</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/projects/">Projects</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/notes/">Notes</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/follow-me/">Follow Me</a></li>
+            </ul>
+          </nav>
+        </div>
+        <img src="/img/james-lawler.jpg" class="hidden size-20 rounded-full md:block" alt="James Lawler" />
+      </div>
+      
+    </header>
+
+    <hr class="my-8 h-px bg-gray-400 border-0 dark:bg-gray-100">
+
+    <main id="skip" class="prose max-w-none flex-grow pb-24 dark:prose-invert">
+      
+<h1 class="text-3xl font-bold mb-4 dark:text-gray-100">How I created a daily game</h1>
+
+
+<div class="flex flex-row flex-wrap gap-2 my-6">
+                  
+<a href="https://tailwindcss.com/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/Tailwind%20CSS-%2338B2AC.svg?logo=tailwind-css&logoColor=white"
+    alt="TailwindCSS"
+/></a>
+        
+<a href="https://pages.github.com/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/GitHub%20Pages-121013?logo=github&logoColor=white"
+    alt="GitHub Pages"
+  />
+</a>
+            
+<a href="https://github.com/features/actions">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&logoColor=white"
+    alt="GitHub Actions"
+/></a>
+        
+
+</div>
+
+
+<div class="flex flex-row gap-4">
+  <time
+    class="dark:text-gray-100"
+    datetime="2025-02-22"
+    >22 February 2025</time
+  >
+  <div
+    class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100"
+  >
+    <a href="/tags/game/" class="post-tag">game</a>
+  </div>
+  <div
+    class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100"
+  >
+    <a href="/tags/portuguese/" class="post-tag">portuguese</a>
+  </div>
+</div>
+
+<p>To help me learn European Portuguese and the genders of the vocabulary I set myself a goal of creating some web-based games. The games would ideally follow a daily concept, in the style of Wordle. Each day the game will reset to a new set of words, and everyone playing the game would see the same set of words.</p>
+<p><picture><source type="image/avif" srcset="/img/h70y2JGudJ-1024.avif 1024w"><source type="image/webp" srcset="/img/h70y2JGudJ-1024.webp 1024w"><img alt="Daily Game" loading="lazy" decoding="async" src="/img/h70y2JGudJ-1024.png" width="1024" height="1024"></picture></p>
+<h2>Project Structure</h2>
+<p>The <a href="https://github.com/jameslawler/daily-pfp">project</a> is a standard NextJs website, built into static files and hosted on GitHub Pages. It is using ReactJs, TypeScript and TailwindCSS.</p>
+<h2>Daily Game Alogirthm</h2>
+<p>The method of randomizing the game each day is through the use of a hash on today's date. The has is then fed into an algorithm which sorts the array of questions in a predictable order based on the hash.</p>
+<pre class="language-ts" tabindex="0"><code class="language-ts"><span class="token keyword">const</span> shuffleArray <span class="token operator">=</span> <span class="token punctuation">(</span>array<span class="token operator">:</span> GameData<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> seed<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">)</span><span class="token operator">:</span> GameData<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> currentIndex <span class="token operator">=</span> array<span class="token punctuation">.</span>length<span class="token punctuation">,</span>
+    temporaryValue<span class="token punctuation">,</span>
+    randomIndex<span class="token punctuation">;</span>
+  seed <span class="token operator">=</span> seed <span class="token operator">||</span> <span class="token number">1</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">const</span> <span class="token function-variable function">random</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> x <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">sin</span><span class="token punctuation">(</span>seed<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">10000</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> x <span class="token operator">-</span> Math<span class="token punctuation">.</span><span class="token function">floor</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token number">0</span> <span class="token operator">!==</span> currentIndex<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    randomIndex <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">floor</span><span class="token punctuation">(</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> currentIndex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    currentIndex <span class="token operator">-=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+
+    temporaryValue <span class="token operator">=</span> array<span class="token punctuation">[</span>currentIndex<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    array<span class="token punctuation">[</span>currentIndex<span class="token punctuation">]</span> <span class="token operator">=</span> array<span class="token punctuation">[</span>randomIndex<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    array<span class="token punctuation">[</span>randomIndex<span class="token punctuation">]</span> <span class="token operator">=</span> temporaryValue<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">return</span> array<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>The date is fed into the above function as a number by using the <code>date.getTime()</code> function and the algorithm performs a <code>Math.sin()</code> call using the seed value provided. The array is then shuffled item by item using the index randomizer until all items have been moved.</p>
+<p>The benefit of this algorithm is that as long as the length of the array stays the same, the array can be predictably sorted based on any date. This allows looking back in time to see the different games that were played without needing to store them.</p>
+<p>In case additional words are added to the game in the future, this can still be maintained by creating separate arrays which are date based, and only dates after the date based array are concatenated together.</p>
+<h2>Statistics Storage</h2>
+<p>The browser's local storage is used to store previous game information. Current two items are stored in the local storage;</p>
+<ol>
+<li><code>gender-game</code>: This key stores</li>
+</ol>
+<ul>
+<li>the date of last game</li>
+<li>the question index of the current question in the current game</li>
+<li>the game state of the current game</li>
+</ul>
+<ol start="2">
+<li><code>gender-game-stats</code>: This key stores</li>
+</ol>
+<ul>
+<li>the overall top score</li>
+<li>past games array containing the date of the game and score achieved</li>
+</ul>
+<p>By combining all of this information from the local storage, the statistics page within the game can display the player their;</p>
+<ul>
+<li>number of days played</li>
+<li>highest score</li>
+<li>longest streak of days played in a row</li>
+<li>a nice GitHub style heatmap of their score progression over time</li>
+</ul>
+<p><picture><source type="image/avif" srcset="/img/96nDkD3w83-400.avif 400w"><source type="image/webp" srcset="/img/96nDkD3w83-400.webp 400w"><img alt="Daily Game Statistics" loading="lazy" decoding="async" src="/img/96nDkD3w83-400.png" width="400" height="368"></picture></p>
+<h2>Project Future</h2>
+<p>I would like to keep the same game structure, but switch the content so I can train myself on other Portuguese grammar topics, like verb conjugations.</p>
+
+<ul>
+  <li>
+    Previous: <a href="/articles/2024/10/13/radio-framework-system-design/">System Design using the RADIO structure</a>
+  </li>
+  
+</ul>
+
+    </main>
+
+    <footer class="mx-auto pb-4">Copyright 2025 - James Lawler</footer>
+  </body>
+</html>
