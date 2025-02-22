@@ -12,7 +12,7 @@ numberOfLatestPostsToShow: 3
   <img src="/img/james-lawler.jpg" class="size-28 rounded-full" alt="James Lawler" />
 </div>
 
-My name is James Lawler and I am a full stack software developer. I currently focus on the JavaScript tech stack and micro-service architecture. This is my personal website which I use to keep track of things I have done over time and write down my [notes](/notes) on various topics. It is easy to lose track of what you have learnt and accomplished, and this site will be a record of my time as a developer.
+My name is James Lawler and I am a full stack software developer. I currently focus on the JavaScript/.NET tech stack and micro-service architecture. This is my personal website which I use to keep track of things I have done over time and write down my [notes](/notes) on various topics. It is easy to lose track of what you have learnt and accomplished, and this site will be a record of my time as a developer.
 
 ## 🖊️ Recent articles
 
@@ -29,6 +29,10 @@ My name is James Lawler and I am a full stack software developer. I currently fo
 See [all articles](/articles/).
 
 ## ⛏️ Things I've Done
+
+### February 2025
+
+- Developed a [web-based daily game](https://daily.portuguesefromportugal.com/) to help practice Portuguese vocabulary genders. The game is built using NextJs, TailwindCSS, and some simple client-side game logic written in JavaScript.
 
 ### September 2024
 
