@@ -12,7 +12,7 @@ stack:
   - cloudflare
 ---
 
-I recently published a new project called [Meal Planner](https:meals.jameslawler.com/). I did a [write up](/projects/meal-planner/) of the project and how I published it into the Cloudflare Developer Platform.
+I recently published a new project called [Meal Planner](https://meals.jameslawler.com/). I did a [write up](/projects/meal-planner/) of the project and how I published it into the Cloudflare Developer Platform.
 
 Overall I had a very positive experience because of the way Cloudflare integrates with GitHub. Rather than needed to setup GitHub actions to build and deploy the project, this is all handled on the Cloudflare side. I connected the project into Cloudflare by giving access to that specific respository. On any pushes to the `main` or other branches it triggers a build process and can even handle versioned environments if I want to keep `main` only for production, and `feature` branches for internal usage.
 

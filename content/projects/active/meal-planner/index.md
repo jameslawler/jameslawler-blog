@@ -9,7 +9,7 @@ stack:
   - cloudflare
 ---
 
-The [Meal Planner](https:meals.jameslawler.com/) project is a side project I wanted to build for the purpose of reducing the weekly spend on food shopping.
+The [Meal Planner](https://meals.jameslawler.com/) project is a side project I wanted to build for the purpose of reducing the weekly spend on food shopping.
 
 {% image "./home.png", "Meal Planner" %}
 
