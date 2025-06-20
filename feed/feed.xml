@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:base="en">
 	<title>James Lawler</title>
-	<subtitle>I am writing about my experiences as a naval navel-gazer.</subtitle>
+	<subtitle>I am writing about my experiences as a software developer.</subtitle>
 	<link href="https://www.jameslawler.com/feed/feed.xml" rel="self"/>
 	<link href="https://www.jameslawler.com/"/>
 	<updated>2025-06-20T00:00:00Z</updated>
