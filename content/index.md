@@ -30,6 +30,10 @@ See [all articles](/articles/).
 
 ## ⛏️ Things I've Done
 
+### June 2025
+
+- Developed a [meal planner](https://meals.jameslawler.com/) to better plan my weekly shopping and reduce my food waste. This project is built on top of Cloudflare Developer Platform and makes use of their serverless D1 Database.
+
 ### February 2025
 
 - Developed a [web-based daily game](https://daily.portuguesefromportugal.com/) to help practice Portuguese vocabulary genders. The game is built using NextJs, TailwindCSS, and some simple client-side game logic written in JavaScript.
