@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Design using the RADIO structure</title>
-    <meta name="description" content="Use the RADIO structure to cleanly define a system design">
+    <title>Cloudflare Developer Platform experiences</title>
+    <meta name="description" content="My experiences using cloudflare developer platform">
     <link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="James Lawler">
     <link rel="alternate" href="/feed/feed.json" type="application/json" title="James Lawler">
     <meta name="generator" content="Eleventy v2.0.1">
@@ -44,18 +44,39 @@
 
     <main id="skip" class="prose max-w-none flex-grow pb-24 dark:prose-invert">
       
-<h1 class="text-3xl font-bold mb-4 dark:text-gray-100">System Design using the RADIO structure</h1>
+<h1 class="text-3xl font-bold mb-4 dark:text-gray-100">Cloudflare Developer Platform experiences</h1>
 
 
 <div class="flex flex-row flex-wrap gap-2 my-6">
-      
-<a href="https://docusaurus.io/">
+   
+<a href="https://react.dev/"
+  ><img
+    class="m-0"
+    src="https://img.shields.io/badge/React-%2320232a.svg?logo=react&logoColor=%2361DAFB"
+    alt="React"
+/></a>
+                 
+<a href="https://tailwindcss.com/">
   <img
     class="m-0"
-    src="https://img.shields.io/badge/Docusaurus-3ECC5F?logo=docusaurus&logoColor=fff"
-    alt="Docusaurus"
+    src="https://img.shields.io/badge/Tailwind%20CSS-%2338B2AC.svg?logo=tailwind-css&logoColor=white"
+    alt="TailwindCSS"
 /></a>
-         
+                     
+<a href="https://www.typescriptlang.org/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/TypeScript-3178C6?logo=TypeScript&logoColor=white&style=flat-square"
+    alt="TypeScript"
+/></a>
+            
+<a href="https://www.cloudflare.com/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/Cloudflare-F38020?logo=Cloudflare&logoColor=white"
+    alt="Cloudflare"
+/></a>
+ 
 
 </div>
 
@@ -63,42 +84,29 @@
 <div class="flex flex-row gap-4">
   <time
     class="dark:text-gray-100"
-    datetime="2024-10-13"
-    >13 October 2024</time
+    datetime="2025-06-20"
+    >20 June 2025</time
   >
   <div
     class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100"
   >
-    <a href="/tags/system-design/" class="post-tag">system_design</a>
+    <a href="/tags/meals/" class="post-tag">meals</a>
   </div>
   <div
     class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100"
   >
-    <a href="/tags/notes/" class="post-tag">notes</a>
+    <a href="/tags/cloudflare/" class="post-tag">cloudflare</a>
   </div>
 </div>
 
-<p>During system design sessions for a project it is important to cover all your bases. During the initial phase when you have contact with the stakeholder of the project, it is important to make sure you ask enough questions to be able to fully undertand the requirements and make a proposal for the technical design.</p>
-<p><strong>RADIO</strong> stands for</p>
-<ul>
-<li>Requirements</li>
-<li>Architecture / High Level</li>
-<li>Data model</li>
-<li>Interface definition (API)</li>
-<li>Optimizations</li>
-</ul>
-<p>This structure is typically used for interviews with system design questions, but can be applied to daily work tasks.</p>
-<p>I first found the RADIO structure on the <a href="https://www.greatfrontend.com/system-design/framework">Great Frontend</a> website and it provides a thorough description of how to use it. Originally it is defined for front end tasks, but in my opinion it is quite good for any type of system design task.</p>
-<p>In my <a href="https://notes.jameslawler.com/category/system-design">Docusauraus</a> instance I have started to write up system designs using this RADIO structure. I create these system designs just for learning and fun and I don't claim them to be the &quot;perfect&quot; design.</p>
-<p>My first one is a simple <a href="https://notes.jameslawler.com/software-engineering/system-design/rate-limiter">Rate Limiter</a> system design, and I will add more over time as learning exercises.</p>
+<p>I recently published a new project called <a href="https:meals.jameslawler.com/">Meal Planner</a>. I did a <a href="/projects/meal-planner/">write up</a> of the project and how I published it into the Cloudflare Developer Platform.</p>
+<p>Overall I had a very positive experience because of the way Cloudflare integrates with GitHub. Rather than needed to setup GitHub actions to build and deploy the project, this is all handled on the Cloudflare side. I connected the project into Cloudflare by giving access to that specific respository. On any pushes to the <code>main</code> or other branches it triggers a build process and can even handle versioned environments if I want to keep <code>main</code> only for production, and <code>feature</code> branches for internal usage.</p>
+<p>Each project could be connected to a different domain / sub domain and from the Cloudflare platform I have a nice overview of each project. This was much more difficuly before when I was running everything in a VPS under a docker host. Now I can have a quick overview of all logs, metrics, request durations, etc with minimal maintenance from my side. I can just focus on the project ideas and less on the infrastructure management.</p>
+<p>Compared to other cloud providers, with Cloudflare, I did not need to provide any payment details as long as I stay within their free tier limits. For small hobby projects like mine, this is not a problem, and even with a small user base I still don't think I would reach their limits.</p>
 
 <ul>
   <li>
-    Previous: <a href="/articles/2024/10/09/blog-rewrite-11ty/">Why I rewrote my blog into 11ty</a>
-  </li>
-  
-  <li>
-    Next: <a href="/articles/2025/02/22/how-I-created-a-daily-game/">How I created a daily game</a>
+    Previous: <a href="/articles/2025/02/22/how-I-created-a-daily-game/">How I created a daily game</a>
   </li>
   
 </ul>

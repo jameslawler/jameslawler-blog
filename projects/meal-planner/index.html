@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Planner</title>
+    <meta name="description" content="I am writing about my experiences as a naval navel-gazer.">
+    <link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="James Lawler">
+    <link rel="alternate" href="/feed/feed.json" type="application/json" title="James Lawler">
+    <meta name="generator" content="Eleventy v2.0.1">
+
+    <link rel="stylesheet" href="/assets/css/tailwind.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script defer data-domain="jameslawler.com" src="https://api.jameslawler.com/js/script.outbound-links.js"></script>
+  </head>
+  <body class="flex flex-col container mx-auto min-h-screen dark:bg-slate-900">
+    <a href="#skip" class="hidden visually-hidden">Skip to main content</a>
+
+    <header>
+      <div class="flex items-center mt-4 md:mt-12">
+        <div class="flex flex-col flex-1">
+          <a href="/" class="text-3xl pb-6 font-bold dark:text-gray-100">James Lawler</a>
+          <nav>
+            <h2 class="hidden visually-hidden">Top level navigation menu</h2>
+            <ul class="flex flex-row flex-wrap gap-2 md:gap-8">
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/">Home</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/articles/">Articles</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/projects/">Projects</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/notes/">Notes</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/follow-me/">Follow Me</a></li>
+            </ul>
+          </nav>
+        </div>
+        <img src="/img/james-lawler.jpg" class="hidden size-20 rounded-full md:block" alt="James Lawler" />
+      </div>
+      
+    </header>
+
+    <hr class="my-8 h-px bg-gray-400 border-0 dark:bg-gray-100">
+
+    <main id="skip" class="prose max-w-none flex-grow pb-24 dark:prose-invert">
+      
+<h1 class="text-3xl font-bold mb-4 dark:text-gray-100">Meal Planner</h1>
+
+
+<div class="flex flex-row flex-wrap gap-2 my-6">
+   
+<a href="https://react.dev/"
+  ><img
+    class="m-0"
+    src="https://img.shields.io/badge/React-%2320232a.svg?logo=react&logoColor=%2361DAFB"
+    alt="React"
+/></a>
+                 
+<a href="https://tailwindcss.com/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/Tailwind%20CSS-%2338B2AC.svg?logo=tailwind-css&logoColor=white"
+    alt="TailwindCSS"
+/></a>
+                     
+<a href="https://www.typescriptlang.org/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/TypeScript-3178C6?logo=TypeScript&logoColor=white&style=flat-square"
+    alt="TypeScript"
+/></a>
+            
+<a href="https://www.cloudflare.com/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/Cloudflare-F38020?logo=Cloudflare&logoColor=white"
+    alt="Cloudflare"
+/></a>
+ 
+
+</div>
+
+
+<p>The <a href="https:meals.jameslawler.com/">Meal Planner</a> project is a side project I wanted to build for the purpose of reducing the weekly spend on food shopping.</p>
+<p><picture><source type="image/avif" srcset="/img/X39JCPla8L-386.avif 386w"><source type="image/webp" srcset="/img/X39JCPla8L-386.webp 386w"><img alt="Meal Planner" loading="lazy" decoding="async" src="/img/X39JCPla8L-386.png" width="386" height="773"></picture></p>
+<h2>The Problem</h2>
+<p>I have a set of meals that are regularly cooked at home, but it was time consuming to remember exactly what I needed to buy each week to ensure I had enough food to cook all of the meals. For me, this lead to going to the supermarket multiple times a week and spending more money.</p>
+<h2>My Solution</h2>
+<p>What I ended up building was a react web site where I could create a list of my regular meals and their ingredients, then each week I could place those meals onto a week plan and the web site generates a calculated shopping list. Each week I only need to update the meal plan for the week and it reclaculates the ingredients list.</p>
+<p>I published the web site on my domain and if anyone has a similar problem to mine, they can also make use of it.</p>
+<h2>Tech Stack</h2>
+<p>This was my first project built on top of the <a href="https://www.cloudflare.com/developer-platform/products/">Cloudflare Developer Platform</a>, and I used the <code>wrangler</code> command line tool to generate a Cloudflare Workers project that uses; <a href="https://vite.dev/">Vite</a>, <a href="https://react.dev/">React</a>, and <a href="https://hono.dev/">Hono</a>. I also added <a href="https://tailwindcss.com/">Tailwindcss</a> for the styling and set it up to use TypeScript.</p>
+<p>The front end is a standard react website with a simple react router for navigation and Tailwind for styling.</p>
+<p>The back end is using Hono instead of Express to manage the api routes of the server side. This was my first time using Hono and it is very light weight, so it is hardly noticeable, which is a good thing. I added some GET, POST, and PUT routes and it was very simple and easy.</p>
+<p>Behind the back end server code is a Cloudflare D1 database. This is essentially a SQL lite database running in the cloudflare cloud, with the advantage of being at the edge near to the client to reduce latency. It is also serverless so there is no software to manage or keep up to date.</p>
+<p><picture><source type="image/avif" srcset="/img/0XqXrFgPJ0-521.avif 521w"><source type="image/webp" srcset="/img/0XqXrFgPJ0-521.webp 521w"><img alt="Meal Planner - architecture" loading="lazy" decoding="async" src="/img/0XqXrFgPJ0-521.png" width="521" height="173"></picture></p>
+<h2>How it works</h2>
+<h3>Creating a new Plan</h3>
+<p>For a project like this, I didn't want any account registration or complexity which bring data privacy concerns. Instead I opted for a unique id approach. Anyone can create a free meal plan from the <code>Home</code> page. Clicking the button will generate a GUID on the server side and insert a new entry into the database. If the user wants to keep their meal plan, they keed to bookmark or save their unique link so they can open it again or share it with friends.</p>
+<p>From the <code>Home</code> page they can also load an existing meal plan by providing the unique ID.</p>
+<p>No names or emails are needed for using this tool. If you lose your unique link, you will need to dig through your browser history or just start again.</p>
+<h3>Using a Plan</h3>
+<p><picture><source type="image/avif" srcset="/img/r9E_UmBnOY-386.avif 386w"><source type="image/webp" srcset="/img/r9E_UmBnOY-386.webp 386w"><img alt="Meal Planner - Meals tab" loading="lazy" decoding="async" src="/img/r9E_UmBnOY-386.png" width="386" height="794"></picture></p>
+<p>Once a meal plan entry is in the database, a user can add their regular meals in the <code>Meals</code> tab. This generates a meals array which is persisted as a JSON string in the D1 database for your unique id. The ingredients list of a meal is open to type anything, but once you type an ingredient once, it is used as an autocomplete for future meals, to save you time typing and to avoid different spelling variations.</p>
+<p>Once all of the regular meals are saved, the <code>Plan</code> tab can be used to add meals to different days of the week.</p>
+<p><picture><source type="image/avif" srcset="/img/6ueCzmHecs-386.avif 386w"><source type="image/webp" srcset="/img/6ueCzmHecs-386.webp 386w"><img alt="Meal Planner - Plan tab" loading="lazy" decoding="async" src="/img/6ueCzmHecs-386.png" width="386" height="794"></picture></p>
+<p>Finally, once the plan is made the <code>Shopping List</code> tab will display a list of all of the aggregated ingredients. From the meals chosen in the week plan, a loop is done to aggregate all of the unit counts as long as the ingredient name is the same and the unit is the same. If the units are not the same then the ingredient it listed again for each variation of unit.</p>
+<p><picture><source type="image/avif" srcset="/img/5BVyzjUrso-386.avif 386w"><source type="image/webp" srcset="/img/5BVyzjUrso-386.webp 386w"><img alt="Meal Planner - Shopping List tab" loading="lazy" decoding="async" src="/img/5BVyzjUrso-386.png" width="386" height="794"></picture></p>
+<p>When the names and units match:
+<code>potatoes 1kg + potatoes 2kg = potatoes 3kg</code></p>
+<p>When the names match but the units don't:
+<code>potatoes 1kg + potatoes 4 pack = potatoes 1kg, potatoes 4 pack</code></p>
+<p>To keep track of purchases when doing the shopping, clicking / tapping on the ingredient on the <code>Shopping List</code> will cross it off.</p>
+<h2>Costs</h2>
+<p>This project is running in the <code>Cloudlfare Worker</code> part of the platform and in the free tier it can have 100,000 requests per day, so around 3 million requests per month. Static pages are not included in these limits, so the react site itself is hosted for unlimited requests and only when a server side endpoint is called is it counted towards the request limit.</p>
+<p>The project also uses a <code>Cloudflare D1 Database</code> which also has a large free tier of 5 million reads per day and 100,000 writes per day. The database can also hold up to 5GB for free.</p>
+<p>In the case of a hobby project like this one, the limits are plenty without having to pay anything.</p>
+<h2>Next Steps</h2>
+<p>Some improvement ideas:</p>
+<ul>
+<li>I would like to add better ingredient management with default standard ingredients and units.</li>
+<li>I would like to persist to the database when items are crossed off the <code>Shopping List</code>.</li>
+<li>I would like to have a history of the plan, so you can start a fresh week, and also look at previous weeks.</li>
+</ul>
+
+
+    </main>
+
+    <footer class="mx-auto pb-4">Copyright 2025 - James Lawler</footer>
+  </body>
+</html>
