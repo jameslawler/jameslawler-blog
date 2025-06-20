@@ -22,8 +22,4 @@ A few years after launching the original version, I converted the site to be a s
 
 ## Content
 
-The hardest part of this project was coming up with content for the website. As this was just a side hobby, it was hard to keep finding resources. In the end we settled on using Wikipedia articles and converting them into content with audio, grammar highlights, questions, and a podcast.
-
-## Postcast
-
-In addition to the website, we also provided a discussion based podcast where we discussed the content and explored the grammar and vocabulary in more detail. As part of this process, I learnt how to use [Audacity](https://www.audacityteam.org/) to build a podcast audio file and clean up the audio quality.
+The hardest part of this project was coming up with content for the website. As this was just a side hobby, it was hard to keep finding resources. In the end we settled on using Wikipedia articles and converting them into content with additional audio, grammar highlights, and questions.

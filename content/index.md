@@ -52,7 +52,7 @@ See [all articles](/articles/).
 
 ### May 2018
 
-- Launched [Portuguese from Portugal](https://portuguesefromportugal.com/) website and podcast. A website with listening and reading material for students of the Portuguese language.
+- Launched [Portuguese from Portugal](https://portuguesefromportugal.com/) website. A website with listening and reading material for students of the Portuguese language.
 
 ### September 2014
 
