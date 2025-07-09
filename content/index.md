@@ -30,6 +30,10 @@ See [all articles](/articles/).
 
 ## ⛏️ Things I've Done
 
+### July 2025
+
+- Developed a [flashlight](https://flashlight.jameslawler.com/) website to help me navigate dark rooms without blasting on my smartphone's built in flash.
+
 ### June 2025
 
 - Developed a [meal planner](https://meals.jameslawler.com/) to better plan my weekly shopping and reduce my food waste. This project is built on top of Cloudflare Developer Platform and makes use of their serverless D1 Database.
