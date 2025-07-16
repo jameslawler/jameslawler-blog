@@ -8,7 +8,7 @@ stack:
   - tailwindcss
 ---
 
-The [Flashlight](https:flashlight.jameslawler.com/) project is a simple single page application that displays a single colour and allow swiping the screen up or down to increase and decrease the brightness.
+The [Flashlight](https://flashlight.jameslawler.com/) project is a simple single page application that displays a single colour and allow swiping the screen up or down to increase and decrease the brightness.
 
 ## Why build this?
 
