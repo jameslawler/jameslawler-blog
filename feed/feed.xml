@@ -4,11 +4,58 @@
 	<subtitle>I am writing about my experiences as a software developer.</subtitle>
 	<link href="https://www.jameslawler.com/feed/feed.xml" rel="self"/>
 	<link href="https://www.jameslawler.com/"/>
-	<updated>2025-12-24T00:00:00Z</updated>
+	<updated>2025-12-26T00:00:00Z</updated>
 	<id>https://www.jameslawler.com/</id>
 	<author>
 		<name>James Lawler</name>
 	</author>
+	
+	<entry>
+		<title>Portuguese AI - Cloudflare / Hono / HTMX</title>
+		<link href="https://www.jameslawler.com/articles/2025/12/26/cloudflare-hono-htmx/"/>
+		<updated>2025-12-26T00:00:00Z</updated>
+		<id>https://www.jameslawler.com/articles/2025/12/26/cloudflare-hono-htmx/</id>
+		<content type="html">&lt;p&gt;As part of the first steps in my plan for the Portuguese AI project, this post is about my experiences of setting up a simple Cloudflare workers project with Hono and HTMX.&lt;/p&gt;
+&lt;p&gt;The GitHub repository can be found here - &lt;a href=&quot;https://github.com/jameslawler/cf-hono-htmx&quot;&gt;https://github.com/jameslawler/cf-hono-htmx&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;A running version can be found here - &lt;a href=&quot;https://cf-hono-htmx.services-15b.workers.dev/&quot;&gt;https://cf-hono-htmx.services-15b.workers.dev/&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Setup&lt;/h2&gt;
+&lt;p&gt;To setup a new project, I first created a new repository in GitHub and gave my Cloudflare integration access to the repository.&lt;/p&gt;
+&lt;p&gt;After cloning the empty project to my local machine I ran the following &lt;code&gt;wrangler&lt;/code&gt; command to start a new project.&lt;/p&gt;
+&lt;pre class=&quot;language-shell&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;&lt;span class=&quot;token function&quot;&gt;npm&lt;/span&gt; create cloudflare@latest -- &lt;span class=&quot;token builtin class-name&quot;&gt;.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then I gave the following answers to the interactive questions&lt;/p&gt;
+&lt;pre class=&quot;language-shell&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;╭ Create an application with Cloudflare Step &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt; of &lt;span class=&quot;token number&quot;&gt;3&lt;/span&gt;
+│
+├ In &lt;span class=&quot;token function&quot;&gt;which&lt;/span&gt; directory &lt;span class=&quot;token keyword&quot;&gt;do&lt;/span&gt; you want to create your application?
+│ &lt;span class=&quot;token function&quot;&gt;dir&lt;/span&gt; ./.
+│
+├ What would you like to start with?
+│ category Framework Starter
+│
+├ Which development framework &lt;span class=&quot;token keyword&quot;&gt;do&lt;/span&gt; you want to use?
+│ framework Hono
+│
+├ Select your deployment platform
+│ platform Workers with Assets
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Project Structure&lt;/h2&gt;
+&lt;p&gt;In order to make a clear separation of the client side code and server side code, I created two top level folders &lt;code&gt;client&lt;/code&gt; and &lt;code&gt;server&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;client&lt;/code&gt; folder will contain &lt;code&gt;tsx&lt;/code&gt; files that render pages and components for what will be shown in the browser when rendered to HTML.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;server&lt;/code&gt; folder will contain any logic that will execute in the Cloudflare Worker. In this example project it contains a simple routing structure of providing a &lt;code&gt;api&lt;/code&gt; and &lt;code&gt;web&lt;/code&gt; routes. The routes return either partial HTML or full pages.&lt;/p&gt;
+&lt;h2&gt;HTMX&lt;/h2&gt;
+&lt;p&gt;As part of this new project I wanted to integrate HTMX to see how it differs from using a full SPA library like React. HTMX simplifies the project by removing the need to minify / bundle the project with tools like Vite.&lt;/p&gt;
+&lt;p&gt;In this example project, the &lt;code&gt;package.json&lt;/code&gt; only has three dependecies.&lt;/p&gt;
+&lt;pre class=&quot;language-json&quot; tabindex=&quot;0&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;&lt;span class=&quot;token property&quot;&gt;&quot;dependencies&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;token property&quot;&gt;&quot;hono&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;^4.11.2&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;&quot;htmx.org&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;^2.0.8&quot;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;token property&quot;&gt;&quot;devDependencies&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;&quot;wrangler&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;^4.54.0&quot;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;`&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Currently the &lt;code&gt;htmx.min.js&lt;/code&gt; is copied manually from the &lt;code&gt;node_modules&lt;/code&gt; folder into the &lt;code&gt;public&lt;/code&gt; folder and then referenced in the top level HTML file.&lt;/p&gt;
+&lt;h2&gt;Next Steps&lt;/h2&gt;
+&lt;p&gt;The next step in my new project is to add &lt;a href=&quot;https://www.better-auth.com/&quot;&gt;better-auth&lt;/a&gt; authentication so I can create features that are public and private. The authentication framework will use the Cloudflare D1 resource to store user and session information. At first I will keep it simple and just use email/password authentication without any kind of email verification. I will intentially disable new account sign up until the project is ready and use it for myself to protect AI features.&lt;/p&gt;
+</content>
+	</entry>
 	
 	<entry>
 		<title>New Project - Portuguese AI</title>

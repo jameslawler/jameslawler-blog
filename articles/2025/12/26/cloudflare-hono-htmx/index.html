@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portuguese AI - Cloudflare / Hono / HTMX</title>
+    <meta name="description" content="Using Hono and HTMX on Cloudflare">
+    <link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="James Lawler">
+    <link rel="alternate" href="/feed/feed.json" type="application/json" title="James Lawler">
+    <meta name="generator" content="Eleventy v2.0.1">
+
+    <link rel="stylesheet" href="/assets/css/tailwind.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script defer data-domain="jameslawler.com" src="https://api.jameslawler.com/js/script.outbound-links.js"></script>
+  </head>
+  <body class="flex flex-col container mx-auto min-h-screen dark:bg-slate-900">
+    <a href="#skip" class="hidden visually-hidden">Skip to main content</a>
+
+    <header>
+      <div class="flex items-center mt-4 md:mt-12">
+        <div class="flex flex-col flex-1">
+          <a href="/" class="text-3xl pb-6 font-bold dark:text-gray-100">James Lawler</a>
+          <nav>
+            <h2 class="hidden visually-hidden">Top level navigation menu</h2>
+            <ul class="flex flex-row flex-wrap gap-2 md:gap-8">
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/">Home</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/articles/">Articles</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/projects/">Projects</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/notes/">Notes</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/follow-me/">Follow Me</a></li>
+            </ul>
+          </nav>
+        </div>
+        <img src="/img/james-lawler.jpg" class="hidden size-20 rounded-full md:block" alt="James Lawler" />
+      </div>
+      
+    </header>
+
+    <hr class="my-8 h-px bg-gray-400 border-0 dark:bg-gray-100">
+
+    <main id="skip" class="prose max-w-none flex-grow pb-24 dark:prose-invert">
+      
+<h1 class="text-3xl font-bold mb-4 dark:text-gray-100">Portuguese AI - Cloudflare / Hono / HTMX</h1>
+
+
+<div class="flex flex-row flex-wrap gap-2 my-6">
+              
+<a href="https://www.cloudflare.com/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/Cloudflare-F38020?logo=Cloudflare&logoColor=white"
+    alt="Cloudflare"
+/></a>
+                           
+
+</div>
+
+
+<div class="flex flex-row gap-4">
+  <time
+    class="dark:text-gray-100"
+    datetime="2025-12-26"
+    >26 December 2025</time
+  >
+  <div
+    class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100"
+  >
+    <a href="/tags/cloudflare/" class="post-tag">cloudflare</a>
+  </div>
+</div>
+
+<p>As part of the first steps in my plan for the Portuguese AI project, this post is about my experiences of setting up a simple Cloudflare workers project with Hono and HTMX.</p>
+<p>The GitHub repository can be found here - <a href="https://github.com/jameslawler/cf-hono-htmx">https://github.com/jameslawler/cf-hono-htmx</a></p>
+<p>A running version can be found here - <a href="https://cf-hono-htmx.services-15b.workers.dev/">https://cf-hono-htmx.services-15b.workers.dev/</a></p>
+<h2>Setup</h2>
+<p>To setup a new project, I first created a new repository in GitHub and gave my Cloudflare integration access to the repository.</p>
+<p>After cloning the empty project to my local machine I ran the following <code>wrangler</code> command to start a new project.</p>
+<pre class="language-shell" tabindex="0"><code class="language-shell"><span class="token function">npm</span> create cloudflare@latest -- <span class="token builtin class-name">.</span></code></pre>
+<p>Then I gave the following answers to the interactive questions</p>
+<pre class="language-shell" tabindex="0"><code class="language-shell">╭ Create an application with Cloudflare Step <span class="token number">1</span> of <span class="token number">3</span>
+│
+├ In <span class="token function">which</span> directory <span class="token keyword">do</span> you want to create your application?
+│ <span class="token function">dir</span> ./.
+│
+├ What would you like to start with?
+│ category Framework Starter
+│
+├ Which development framework <span class="token keyword">do</span> you want to use?
+│ framework Hono
+│
+├ Select your deployment platform
+│ platform Workers with Assets
+</code></pre>
+<h2>Project Structure</h2>
+<p>In order to make a clear separation of the client side code and server side code, I created two top level folders <code>client</code> and <code>server</code>.</p>
+<p>The <code>client</code> folder will contain <code>tsx</code> files that render pages and components for what will be shown in the browser when rendered to HTML.</p>
+<p>The <code>server</code> folder will contain any logic that will execute in the Cloudflare Worker. In this example project it contains a simple routing structure of providing a <code>api</code> and <code>web</code> routes. The routes return either partial HTML or full pages.</p>
+<h2>HTMX</h2>
+<p>As part of this new project I wanted to integrate HTMX to see how it differs from using a full SPA library like React. HTMX simplifies the project by removing the need to minify / bundle the project with tools like Vite.</p>
+<p>In this example project, the <code>package.json</code> only has three dependecies.</p>
+<pre class="language-json" tabindex="0"><code class="language-json"><span class="token property">"dependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+	<span class="token property">"hono"</span><span class="token operator">:</span> <span class="token string">"^4.11.2"</span><span class="token punctuation">,</span>
+  <span class="token property">"htmx.org"</span><span class="token operator">:</span> <span class="token string">"^2.0.8"</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token property">"devDependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+  <span class="token property">"wrangler"</span><span class="token operator">:</span> <span class="token string">"^4.54.0"</span>
+<span class="token punctuation">}</span>`</code></pre>
+<p>Currently the <code>htmx.min.js</code> is copied manually from the <code>node_modules</code> folder into the <code>public</code> folder and then referenced in the top level HTML file.</p>
+<h2>Next Steps</h2>
+<p>The next step in my new project is to add <a href="https://www.better-auth.com/">better-auth</a> authentication so I can create features that are public and private. The authentication framework will use the Cloudflare D1 resource to store user and session information. At first I will keep it simple and just use email/password authentication without any kind of email verification. I will intentially disable new account sign up until the project is ready and use it for myself to protect AI features.</p>
+
+<ul>
+  <li>
+    Previous: <a href="/articles/2025/12/24/new-project-portuguese-ai/">New Project - Portuguese AI</a>
+  </li>
+  
+</ul>
+
+    </main>
+
+    <footer class="mx-auto pb-4">Copyright 2025 - James Lawler</footer>
+  </body>
+</html>
