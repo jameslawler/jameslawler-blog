@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Project - Portuguese AI</title>
+    <meta name="description" content="Planning a new project idea for assisting my learning of the Portuguese language">
+    <link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="James Lawler">
+    <link rel="alternate" href="/feed/feed.json" type="application/json" title="James Lawler">
+    <meta name="generator" content="Eleventy v2.0.1">
+
+    <link rel="stylesheet" href="/assets/css/tailwind.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script defer data-domain="jameslawler.com" src="https://api.jameslawler.com/js/script.outbound-links.js"></script>
+  </head>
+  <body class="flex flex-col container mx-auto min-h-screen dark:bg-slate-900">
+    <a href="#skip" class="hidden visually-hidden">Skip to main content</a>
+
+    <header>
+      <div class="flex items-center mt-4 md:mt-12">
+        <div class="flex flex-col flex-1">
+          <a href="/" class="text-3xl pb-6 font-bold dark:text-gray-100">James Lawler</a>
+          <nav>
+            <h2 class="hidden visually-hidden">Top level navigation menu</h2>
+            <ul class="flex flex-row flex-wrap gap-2 md:gap-8">
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/">Home</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/articles/">Articles</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/projects/">Projects</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/notes/">Notes</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/follow-me/">Follow Me</a></li>
+            </ul>
+          </nav>
+        </div>
+        <img src="/img/james-lawler.jpg" class="hidden size-20 rounded-full md:block" alt="James Lawler" />
+      </div>
+      
+    </header>
+
+    <hr class="my-8 h-px bg-gray-400 border-0 dark:bg-gray-100">
+
+    <main id="skip" class="prose max-w-none flex-grow pb-24 dark:prose-invert">
+      
+<h1 class="text-3xl font-bold mb-4 dark:text-gray-100">New Project - Portuguese AI</h1>
+
+
+<div class="flex flex-row flex-wrap gap-2 my-6">
+              
+<a href="https://www.cloudflare.com/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/Cloudflare-F38020?logo=Cloudflare&logoColor=white"
+    alt="Cloudflare"
+/></a>
+ 
+
+</div>
+
+
+<div class="flex flex-row gap-4">
+  <time
+    class="dark:text-gray-100"
+    datetime="2025-12-24"
+    >24 December 2025</time
+  >
+  <div
+    class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100"
+  >
+    <a href="/tags/cloudflare/" class="post-tag">cloudflare</a>
+  </div>
+  <div
+    class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100"
+  >
+    <a href="/tags/ai/" class="post-tag">ai</a>
+  </div>
+</div>
+
+<p>I want to build a new project as an opportunity to learn some new technologies, solve some interesting problems, as hopefully end up with a product that will help me improve my Portuguese.</p>
+<h2>Project</h2>
+<p>My goal is to build a web application that provides a similar learning experience to <a href="https://roadmap.sh/">roadmap.sh</a> but for the Portuguese language. Users will be able to see a high level view of the language learning process for the various levels (A1, A2, etc) and open more specific information and links for each topic.</p>
+<p>Rather than focusing on providing links to resources, the content provided on the site will guide the user through that unit.</p>
+<h2>Technology</h2>
+<ul>
+<li>Cloudflare Workers - server side APIs</li>
+<li>Cloudflare D1 - server side database</li>
+<li>Hono - server side framework</li>
+<li>better-auth - authentication framework</li>
+<li>HTMX - client side code</li>
+<li>Cloudflare AI - LLM resources</li>
+</ul>
+<p>The tools Hono, better-auth, and HTMX are new to me and will have a learning curve to integrate them.</p>
+<p>The technology list above is not fixed, and if any of them become too complicated to integrate, I may switch to a different set of technologies.</p>
+<h2>Plan</h2>
+<p>I will work through this project in various stages to tackle each problem one at a time. Below is an initial list of the topics that will need to be solved.</p>
+<ol>
+<li>Create the initial project and connect it to Cloudflare with a D1 database.</li>
+<li>Create a simple home page in HTMX.</li>
+<li>Add authentication (email/password) with a signup and login page.</li>
+<li>Add a basic node map for the first few steps of learning Portuguese.</li>
+<li>Add a overlay when a node is clicked and load the data in HTMX from the server side.</li>
+<li>Add AI integrations to the learning overlay.</li>
+<li>Create a first full node map with content.</li>
+</ol>
+<h2>Costs</h2>
+<p>The project will run in Cloudflare which provides a decent free tier for workers, D1 database, and AI. If I am the only one using this project, then I imagine the costs will fall within the free tier. If I see a potential for opening up the project to the public in the future, I would need to determine some pricing to make sure it covers the overhead costs of Cloudflare.</p>
+<h2>AI</h2>
+<p>Cloudflare provides many open source models, including the GPT open source models for text generation. I would like to make use of those AI models and once a simple text chat is working, I will experiment with the speech to text, and text to speech models. My end goal would be to see if it is possible to have a &quot;professor&quot; experience interacting with the content on the web page, so I can just talk to my browser and have it talk back.</p>
+
+<ul>
+  <li>
+    Previous: <a href="/articles/2025/06/20/cloudflare-developer-platform-experiences/">Cloudflare Developer Platform experiences</a>
+  </li>
+  
+</ul>
+
+    </main>
+
+    <footer class="mx-auto pb-4">Copyright 2025 - James Lawler</footer>
+  </body>
+</html>
