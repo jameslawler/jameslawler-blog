@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portuguese AI - Better Auth</title>
+    <meta name="description" content="Adding better-auth to the project">
+    <link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="James Lawler">
+    <link rel="alternate" href="/feed/feed.json" type="application/json" title="James Lawler">
+    <meta name="generator" content="Eleventy v2.0.1">
+
+    <link rel="stylesheet" href="/assets/css/tailwind.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script defer data-domain="jameslawler.com" src="https://api.jameslawler.com/js/script.outbound-links.js"></script>
+  </head>
+  <body class="flex flex-col container mx-auto min-h-screen dark:bg-slate-900">
+    <a href="#skip" class="hidden visually-hidden">Skip to main content</a>
+
+    <header>
+      <div class="flex items-center mt-4 md:mt-12">
+        <div class="flex flex-col flex-1">
+          <a href="/" class="text-3xl pb-6 font-bold dark:text-gray-100">James Lawler</a>
+          <nav>
+            <h2 class="hidden visually-hidden">Top level navigation menu</h2>
+            <ul class="flex flex-row flex-wrap gap-2 md:gap-8">
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/">Home</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/articles/">Articles</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/projects/">Projects</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/notes/">Notes</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/follow-me/">Follow Me</a></li>
+            </ul>
+          </nav>
+        </div>
+        <img src="/img/james-lawler.jpg" class="hidden size-20 rounded-full md:block" alt="James Lawler" />
+      </div>
+      
+    </header>
+
+    <hr class="my-8 h-px bg-gray-400 border-0 dark:bg-gray-100">
+
+    <main id="skip" class="prose max-w-none flex-grow pb-24 dark:prose-invert">
+      
+<h1 class="text-3xl font-bold mb-4 dark:text-gray-100">Portuguese AI - Better Auth</h1>
+
+
+<div class="flex flex-row flex-wrap gap-2 my-6">
+              
+<a href="https://www.cloudflare.com/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/Cloudflare-F38020?logo=Cloudflare&logoColor=white"
+    alt="Cloudflare"
+/></a>
+                                        
+
+</div>
+
+
+<div class="flex flex-row gap-4">
+  <time
+    class="dark:text-gray-100"
+    datetime="2025-12-28"
+    >28 December 2025</time
+  >
+  <div
+    class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100"
+  >
+    <a href="/tags/cloudflare/" class="post-tag">cloudflare</a>
+  </div>
+  <div
+    class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100"
+  >
+    <a href="/tags/portuguese-ai/" class="post-tag">portuguese-ai</a>
+  </div>
+</div>
+
+<p>Better Auth is a typescript based framework for adding authentication to an application. As I will be using Cloudflare Workers to run this project with a D1 Database, I spent some time making <code>better-auth</code> work with this &quot;unusual&quot; configuration.</p>
+<p>At first I followed this <a href="https://hono.dev/examples/better-auth-on-cloudflare">guide</a> from the Hono website, but they don't use the Cloudflare D1 database, so I had to adapt that part.</p>
+<p>If you checkout my <a href="https://github.com/jameslawler/portuguese-ai-app">repository</a> at commit <a href="https://github.com/jameslawler/portuguese-ai-app/commit/6815d84fcbfc7d12cdcff78276154c4e7f9c7e62">6815d84</a> it has the <code>better-auth</code> functioning with Cloudflare D1 and with a very basic frontend.</p>
+<h2>Add new Dependencies</h2>
+<p>To make <code>better-auth</code> work in the project, I added the following packages.</p>
+<ul>
+<li>drizzle-orm</li>
+<li>better-auth</li>
+<li>drizzle-kit (devDependency only)</li>
+</ul>
+<h2>Integration</h2>
+<p>These were the steps I followed to integrate the <code>better-auth</code> framework.</p>
+<ol>
+<li>Create a Cloudflare D1 database for the project that will contain the <code>better-auth</code> tables.</li>
+</ol>
+<pre class="language-shell" tabindex="0"><code class="language-shell">wrangler d1 create <span class="token operator">&lt;</span>project-name<span class="token operator">></span></code></pre>
+<ol start="2">
+<li>Create a <code>drizzle.config.ts</code> file in the top level folder.</li>
+</ol>
+<pre class="language-ts" tabindex="0"><code class="language-ts"><span class="token keyword">import</span> <span class="token keyword">type</span> <span class="token punctuation">{</span> Config <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"drizzle-kit"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  schema<span class="token operator">:</span> <span class="token string">"./server/db/better-auth-schema.ts"</span><span class="token punctuation">,</span>
+  out<span class="token operator">:</span> <span class="token string">"./migrations"</span><span class="token punctuation">,</span>
+  driver<span class="token operator">:</span> <span class="token string">"d1-http"</span><span class="token punctuation">,</span>
+  dialect<span class="token operator">:</span> <span class="token string">"sqlite"</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span> satisfies Config<span class="token punctuation">;</span></code></pre>
+<p>The <code>schema</code> location tells drizzle where to find the schema file for the generation of the migration file.</p>
+<ol start="3">
+<li>Add <code>db</code> folder to server code to contain the better-auth schema and a index to load the database</li>
+</ol>
+<p>To generate the <code>better-auth</code> schema, you need to use the following command.</p>
+<pre class="language-shell" tabindex="0"><code class="language-shell">npx @better-auth/cli generate</code></pre>
+<p>Unfortunately, because of the way the Cloudflare D1 database works, it is only accessible during a server side request. You can't call it directly and for the generation of the schema to work, it needs to be able to point to the <code>auth.ts</code> file that directly exposes a <code>better-auth</code> instance. I was able to work around this by pointing it directly to the sqllite file found in the <code>.wrangler</code> file. After generating this file, it can be copied between future projects as the schema is fairly static.</p>
+<p>This is the code I added to <code>./server/db/better-auth-schema.ts</code>.</p>
+<pre class="language-ts" tabindex="0"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> relations<span class="token punctuation">,</span> sql <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"drizzle-orm"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> sqliteTable<span class="token punctuation">,</span> text<span class="token punctuation">,</span> integer<span class="token punctuation">,</span> index <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"drizzle-orm/sqlite-core"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> user <span class="token operator">=</span> <span class="token function">sqliteTable</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+  id<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">primaryKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  name<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  email<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"email"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unique</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  emailVerified<span class="token operator">:</span> <span class="token function">integer</span><span class="token punctuation">(</span><span class="token string">"email_verified"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> mode<span class="token operator">:</span> <span class="token string">"boolean"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">default</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  image<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"image"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  createdAt<span class="token operator">:</span> <span class="token function">integer</span><span class="token punctuation">(</span><span class="token string">"created_at"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> mode<span class="token operator">:</span> <span class="token string">"timestamp_ms"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">default</span><span class="token punctuation">(</span>sql<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">(cast(unixepoch('subsecond') * 1000 as integer))</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  updatedAt<span class="token operator">:</span> <span class="token function">integer</span><span class="token punctuation">(</span><span class="token string">"updated_at"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> mode<span class="token operator">:</span> <span class="token string">"timestamp_ms"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">default</span><span class="token punctuation">(</span>sql<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">(cast(unixepoch('subsecond') * 1000 as integer))</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">$onUpdate</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token comment">/* @__PURE__ */</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> session <span class="token operator">=</span> <span class="token function">sqliteTable</span><span class="token punctuation">(</span>
+  <span class="token string">"session"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    id<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">primaryKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    expiresAt<span class="token operator">:</span> <span class="token function">integer</span><span class="token punctuation">(</span><span class="token string">"expires_at"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> mode<span class="token operator">:</span> <span class="token string">"timestamp_ms"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    token<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"token"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unique</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    createdAt<span class="token operator">:</span> <span class="token function">integer</span><span class="token punctuation">(</span><span class="token string">"created_at"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> mode<span class="token operator">:</span> <span class="token string">"timestamp_ms"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">default</span><span class="token punctuation">(</span>sql<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">(cast(unixepoch('subsecond') * 1000 as integer))</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    updatedAt<span class="token operator">:</span> <span class="token function">integer</span><span class="token punctuation">(</span><span class="token string">"updated_at"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> mode<span class="token operator">:</span> <span class="token string">"timestamp_ms"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">$onUpdate</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token comment">/* @__PURE__ */</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    ipAddress<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"ip_address"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    userAgent<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"user_agent"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    userId<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"user_id"</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">references</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> user<span class="token punctuation">.</span>id<span class="token punctuation">,</span> <span class="token punctuation">{</span> onDelete<span class="token operator">:</span> <span class="token string">"cascade"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">(</span>table<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">[</span><span class="token function">index</span><span class="token punctuation">(</span><span class="token string">"session_userId_idx"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span>table<span class="token punctuation">.</span>userId<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> account <span class="token operator">=</span> <span class="token function">sqliteTable</span><span class="token punctuation">(</span>
+  <span class="token string">"account"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    id<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">primaryKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    accountId<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"account_id"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    providerId<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"provider_id"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    userId<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"user_id"</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">references</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> user<span class="token punctuation">.</span>id<span class="token punctuation">,</span> <span class="token punctuation">{</span> onDelete<span class="token operator">:</span> <span class="token string">"cascade"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    accessToken<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"access_token"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    refreshToken<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"refresh_token"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    idToken<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"id_token"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    accessTokenExpiresAt<span class="token operator">:</span> <span class="token function">integer</span><span class="token punctuation">(</span><span class="token string">"access_token_expires_at"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+      mode<span class="token operator">:</span> <span class="token string">"timestamp_ms"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    refreshTokenExpiresAt<span class="token operator">:</span> <span class="token function">integer</span><span class="token punctuation">(</span><span class="token string">"refresh_token_expires_at"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+      mode<span class="token operator">:</span> <span class="token string">"timestamp_ms"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    scope<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"scope"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    password<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"password"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    createdAt<span class="token operator">:</span> <span class="token function">integer</span><span class="token punctuation">(</span><span class="token string">"created_at"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> mode<span class="token operator">:</span> <span class="token string">"timestamp_ms"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">default</span><span class="token punctuation">(</span>sql<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">(cast(unixepoch('subsecond') * 1000 as integer))</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    updatedAt<span class="token operator">:</span> <span class="token function">integer</span><span class="token punctuation">(</span><span class="token string">"updated_at"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> mode<span class="token operator">:</span> <span class="token string">"timestamp_ms"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">$onUpdate</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token comment">/* @__PURE__ */</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">(</span>table<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">[</span><span class="token function">index</span><span class="token punctuation">(</span><span class="token string">"account_userId_idx"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span>table<span class="token punctuation">.</span>userId<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> verification <span class="token operator">=</span> <span class="token function">sqliteTable</span><span class="token punctuation">(</span>
+  <span class="token string">"verification"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    id<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">primaryKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    identifier<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"identifier"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    value<span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"value"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    expiresAt<span class="token operator">:</span> <span class="token function">integer</span><span class="token punctuation">(</span><span class="token string">"expires_at"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> mode<span class="token operator">:</span> <span class="token string">"timestamp_ms"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    createdAt<span class="token operator">:</span> <span class="token function">integer</span><span class="token punctuation">(</span><span class="token string">"created_at"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> mode<span class="token operator">:</span> <span class="token string">"timestamp_ms"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">default</span><span class="token punctuation">(</span>sql<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">(cast(unixepoch('subsecond') * 1000 as integer))</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    updatedAt<span class="token operator">:</span> <span class="token function">integer</span><span class="token punctuation">(</span><span class="token string">"updated_at"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> mode<span class="token operator">:</span> <span class="token string">"timestamp_ms"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">default</span><span class="token punctuation">(</span>sql<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">(cast(unixepoch('subsecond') * 1000 as integer))</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">$onUpdate</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token comment">/* @__PURE__ */</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">(</span>table<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">[</span><span class="token function">index</span><span class="token punctuation">(</span><span class="token string">"verification_identifier_idx"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span>table<span class="token punctuation">.</span>identifier<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> userRelations <span class="token operator">=</span> <span class="token function">relations</span><span class="token punctuation">(</span>user<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">{</span> many <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+  sessions<span class="token operator">:</span> <span class="token function">many</span><span class="token punctuation">(</span>session<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  accounts<span class="token operator">:</span> <span class="token function">many</span><span class="token punctuation">(</span>account<span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> sessionRelations <span class="token operator">=</span> <span class="token function">relations</span><span class="token punctuation">(</span>session<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">{</span> one <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+  user<span class="token operator">:</span> <span class="token function">one</span><span class="token punctuation">(</span>user<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    fields<span class="token operator">:</span> <span class="token punctuation">[</span>session<span class="token punctuation">.</span>userId<span class="token punctuation">]</span><span class="token punctuation">,</span>
+    references<span class="token operator">:</span> <span class="token punctuation">[</span>user<span class="token punctuation">.</span>id<span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> accountRelations <span class="token operator">=</span> <span class="token function">relations</span><span class="token punctuation">(</span>account<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">{</span> one <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+  user<span class="token operator">:</span> <span class="token function">one</span><span class="token punctuation">(</span>user<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    fields<span class="token operator">:</span> <span class="token punctuation">[</span>account<span class="token punctuation">.</span>userId<span class="token punctuation">]</span><span class="token punctuation">,</span>
+    references<span class="token operator">:</span> <span class="token punctuation">[</span>user<span class="token punctuation">.</span>id<span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Add <code>index.ts</code> file that can load a D1 database into a Drizzle instance.</p>
+<pre class="language-ts" tabindex="0"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> drizzle <span class="token keyword">as</span> drizzleD1 <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"drizzle-orm/d1"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> schema <span class="token keyword">from</span> <span class="token string">"./better-auth-schema"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">getDb</span><span class="token punctuation">(</span>db<span class="token operator">?</span><span class="token operator">:</span> D1Database<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>db<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">drizzleD1</span><span class="token punctuation">(</span>db<span class="token punctuation">,</span> <span class="token punctuation">{</span> schema <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">"No database configuration found"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">type</span> <span class="token class-name">DrizzleClient</span> <span class="token operator">=</span> ReturnType<span class="token operator">&lt;</span><span class="token keyword">typeof</span> getDb<span class="token operator">></span><span class="token punctuation">;</span></code></pre>
+<ol start="4">
+<li>Add the <code>./server/auth.ts</code> file on the server side. This file is used to create an instance of <code>better-auth</code> that can be used to sign up new users, sign in users, sign out users, and get current session information for users.</li>
+</ol>
+<pre class="language-ts" tabindex="0"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> betterAuth <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"better-auth"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> drizzleAdapter <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"better-auth/adapters/drizzle"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token keyword">type</span> <span class="token punctuation">{</span> DrizzleClient <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"./db"</span>
+
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">getAuth</span><span class="token punctuation">(</span>db<span class="token operator">:</span> DrizzleClient<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">betterAuth</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        database<span class="token operator">:</span> <span class="token function">drizzleAdapter</span><span class="token punctuation">(</span>db<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+            provider<span class="token operator">:</span> <span class="token string">"sqlite"</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        emailAndPassword<span class="token operator">:</span> <span class="token punctuation">{</span> 
+            enabled<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> 
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">type</span> <span class="token class-name">BetterAuth</span> <span class="token operator">=</span> ReturnType<span class="token operator">&lt;</span><span class="token keyword">typeof</span> getAuth<span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token keyword">export</span> <span class="token keyword">type</span> <span class="token class-name">AuthUser</span> <span class="token operator">=</span> BetterAuth<span class="token punctuation">[</span><span class="token string">"$Infer"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"Session"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"user"</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">export</span> <span class="token keyword">type</span> <span class="token class-name">AuthSession</span> <span class="token operator">=</span> BetterAuth<span class="token punctuation">[</span><span class="token string">"$Infer"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"Session"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"session"</span><span class="token punctuation">]</span><span class="token punctuation">;</span></code></pre>
+<p>In this example, only the <code>emailAndPassword</code> provider has been enabled, but it is possible here to enable other providers, like Google, GitHub, etc.</p>
+<h2>Routes</h2>
+<p>With the steps above, the project now has a <code>better-auth</code> integration using a D1 database. Now I want to use it in my HTMX project.</p>
+<p>The main architecture of this project is to maintain all state on the server side and the browser just uses HTMX to get full and partial pages from routes on the server side. With each call to the server, any authentication cookies are passed automatically, so the server side can determine the logged in state.</p>
+<ol>
+<li>Add <code>/api/auth</code> routes.</li>
+</ol>
+<p>The <code>better-auth</code> framework provides built in auth endpoints, but they expect JSON payloads in the request body. Due to the way HTMX works, by default data is sent as form data, which means that to use the default handlers the HTMX would need to be adapted to change the payloads before sending to the server. This requires extensions to be installed and more complex HTMX code. To minimise this I instead decided to handle it on the server side and keep the HTMX simple.</p>
+<p>The sign up route was added using the code below, which receives the POST request, converts the body, and then calls the <code>better-auth</code> api directly.</p>
+<p>Important to note is that with HTMX, you can influence how the page will respond with reponse headers. For example the sign up route responds with the <code>HX-Redirect</code> header, which tells the page to redirect to another url.</p>
+<pre class="language-ts" tabindex="0"><code class="language-ts">auth<span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span><span class="token string">"/sign-up/email"</span><span class="token punctuation">,</span> <span class="token keyword">async</span> <span class="token punctuation">(</span>c<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> db <span class="token operator">=</span> <span class="token function">getDb</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">DB</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> auth <span class="token operator">=</span> <span class="token function">getAuth</span><span class="token punctuation">(</span>db<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">const</span> formData <span class="token operator">=</span> <span class="token keyword">await</span> c<span class="token punctuation">.</span>req<span class="token punctuation">.</span><span class="token function">formData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> body <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">fromEntries</span><span class="token punctuation">(</span>formData<span class="token punctuation">.</span><span class="token function">entries</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token punctuation">{</span>
+    name<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+    email<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+    password<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">try</span> <span class="token punctuation">{</span>
+    <span class="token keyword">await</span> auth<span class="token punctuation">.</span>api<span class="token punctuation">.</span><span class="token function">signUpEmail</span><span class="token punctuation">(</span><span class="token punctuation">{</span> body <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> c<span class="token punctuation">.</span><span class="token function">body</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+      <span class="token string-property property">"HX-Redirect"</span><span class="token operator">:</span> <span class="token string">"/signin"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token operator">:</span> <span class="token builtin">any</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> c<span class="token punctuation">.</span><span class="token function">html</span><span class="token punctuation">(</span>
+      <span class="token operator">&lt;</span>AuthSignup
+        errorMessage<span class="token operator">=</span><span class="token punctuation">{</span>err<span class="token punctuation">.</span>message<span class="token punctuation">}</span>
+        defaultName<span class="token operator">=</span><span class="token punctuation">{</span>body<span class="token punctuation">.</span>name<span class="token punctuation">}</span>
+        defaultEmail<span class="token operator">=</span><span class="token punctuation">{</span>body<span class="token punctuation">.</span>email<span class="token punctuation">}</span>
+      <span class="token operator">/</span><span class="token operator">></span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2>Middleware</h2>
+<p>In order to allow routes to get access to the logged in state and user data I create a middleware which is injected to every route.</p>
+<pre class="language-ts" tabindex="0"><code class="language-ts">app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span><span class="token string">"*"</span><span class="token punctuation">,</span> <span class="token function">authMiddleware</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p><code>./server/middleware/auth.ts</code></p>
+<pre class="language-ts" tabindex="0"><code class="language-ts"><span class="token keyword">import</span> <span class="token keyword">type</span> <span class="token punctuation">{</span> Context<span class="token punctuation">,</span> Next <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"hono"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> getDb <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"../db"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> getAuth <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"../auth"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token keyword">type</span> <span class="token punctuation">{</span> AuthUser<span class="token punctuation">,</span> AuthSession <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"../auth"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">authMiddleware</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">async</span> <span class="token punctuation">(</span>c<span class="token operator">:</span> Context<span class="token punctuation">,</span> next<span class="token operator">:</span> Next<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> db <span class="token operator">=</span> <span class="token function">getDb</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">DB</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> auth <span class="token operator">=</span> <span class="token function">getAuth</span><span class="token punctuation">(</span>db<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// Get session from request headers</span>
+    <span class="token keyword">const</span> session <span class="token operator">=</span> <span class="token keyword">await</span> auth<span class="token punctuation">.</span>api<span class="token punctuation">.</span><span class="token function">getSession</span><span class="token punctuation">(</span><span class="token punctuation">{</span> headers<span class="token operator">:</span> c<span class="token punctuation">.</span>req<span class="token punctuation">.</span>raw<span class="token punctuation">.</span>headers <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>session<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      c<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      c<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"session"</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">await</span> <span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// Set user/session on context</span>
+    c<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">,</span> session<span class="token punctuation">.</span>user <span class="token keyword">as</span> AuthUser<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    c<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"session"</span><span class="token punctuation">,</span> session<span class="token punctuation">.</span>session <span class="token keyword">as</span> AuthSession<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">await</span> <span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>With this middleware, any route can access the <code>user</code> or <code>session</code> data with the following code.</p>
+<pre class="language-ts" tabindex="0"><code class="language-ts"><span class="token keyword">const</span> web <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Hono<span class="token operator">&lt;</span><span class="token punctuation">{</span>
+  Bindings<span class="token operator">:</span> CloudflareBindings<span class="token punctuation">;</span>
+  Variables<span class="token operator">:</span> <span class="token punctuation">{</span>
+    user<span class="token operator">:</span> AuthUser <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    session<span class="token operator">:</span> AuthSession <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token operator">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+web<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">,</span> <span class="token keyword">async</span> <span class="token punctuation">(</span>c<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> user <span class="token operator">=</span> c<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> session <span class="token operator">=</span> c<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"session"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> c<span class="token punctuation">.</span><span class="token function">html</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>HomePage userName<span class="token operator">=</span><span class="token punctuation">{</span>user<span class="token operator">?.</span>name<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2>Next Steps</h2>
+<p>For the next steps of this project, I will focus on adding a way to generate the roadmap for learning Portuguese. I will be trying to build a very simple SVG builder that builds up SVG nodes and exports the structure like node positions, to a json and the database.</p>
+
+<ul>
+  <li>
+    Previous: <a href="/articles/2025/12/26/cloudflare-hono-htmx/">Portuguese AI - Cloudflare / Hono / HTMX</a>
+  </li>
+  
+</ul>
+
+    </main>
+
+    <footer class="mx-auto pb-4">Copyright 2025 - James Lawler</footer>
+  </body>
+</html>
