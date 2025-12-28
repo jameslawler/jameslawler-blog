@@ -4,6 +4,7 @@ description: Using Hono and HTMX on Cloudflare
 date: 2025-12-26
 tags:
   - cloudflare
+  - portuguese-ai
 stack:
   - cloudflare
   - hono

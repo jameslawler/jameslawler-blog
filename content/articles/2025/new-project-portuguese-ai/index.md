@@ -1,10 +1,11 @@
 ---
-title: New Project - Portuguese AI
+title: Portuguese AI
 description: Planning a new project idea for assisting my learning of the Portuguese language
 date: 2025-12-24
 tags:
   - cloudflare
   - ai
+  - portuguese-ai
 stack:
   - cloudflare
 ---
