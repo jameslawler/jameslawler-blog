@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portuguese AI - SVG Builder</title>
+    <meta name="description" content="Building my own SVG builder">
+    <link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="James Lawler">
+    <link rel="alternate" href="/feed/feed.json" type="application/json" title="James Lawler">
+    <meta name="generator" content="Eleventy v2.0.1">
+
+    <link rel="stylesheet" href="/assets/css/tailwind.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script defer data-domain="jameslawler.com" src="https://api.jameslawler.com/js/script.outbound-links.js"></script>
+  </head>
+  <body class="flex flex-col container mx-auto min-h-screen dark:bg-slate-900">
+    <a href="#skip" class="hidden visually-hidden">Skip to main content</a>
+
+    <header>
+      <div class="flex items-center mt-4 md:mt-12">
+        <div class="flex flex-col flex-1">
+          <a href="/" class="text-3xl pb-6 font-bold dark:text-gray-100">James Lawler</a>
+          <nav>
+            <h2 class="hidden visually-hidden">Top level navigation menu</h2>
+            <ul class="flex flex-row flex-wrap gap-2 md:gap-8">
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/">Home</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/articles/">Articles</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/projects/">Projects</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/notes/">Notes</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/follow-me/">Follow Me</a></li>
+            </ul>
+          </nav>
+        </div>
+        <img src="/img/james-lawler.jpg" class="hidden size-20 rounded-full md:block" alt="James Lawler" />
+      </div>
+      
+    </header>
+
+    <hr class="my-8 h-px bg-gray-400 border-0 dark:bg-gray-100">
+
+    <main id="skip" class="prose max-w-none flex-grow pb-24 dark:prose-invert">
+      
+<h1 class="text-3xl font-bold mb-4 dark:text-gray-100">Portuguese AI - SVG Builder</h1>
+
+
+<div class="flex flex-row flex-wrap gap-2 my-6">
+              
+<a href="https://www.cloudflare.com/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/Cloudflare-F38020?logo=Cloudflare&logoColor=white"
+    alt="Cloudflare"
+/></a>
+                                 
+<a href="https://alpinejs.dev/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/Alpine.js-8BC0D0?logo=alpinedotjs&logoColor=fff"
+    alt="AlpineJS"
+/></a>
+       
+
+</div>
+
+
+<div class="flex flex-row gap-4">
+  <time
+    class="dark:text-gray-100"
+    datetime="2026-01-15"
+    >15 January 2026</time
+  >
+  <div
+    class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100"
+  >
+    <a href="/tags/cloudflare/" class="post-tag">cloudflare</a>
+  </div>
+  <div
+    class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100"
+  >
+    <a href="/tags/portuguese-ai/" class="post-tag">portuguese-ai</a>
+  </div>
+</div>
+
+<p>In the next phase of this project, my goal was to build a map of the learning path that could be edited and maintained in the project's Cloudflare D1 database. I looked in to various libraries available online for building node based diagrams, for example <a href="https://reactflow.dev/">React Flow</a>, but I couldn't find one that was simple enough to build what I wanted. I didn't want to use React, instead I am using HTMX with a very light backend to supply the HTML markup.</p>
+<p>I looked into what I really wanted, and in the end I just needed a very basic SVG builder, so I built it.</p>
+<p><picture><source type="image/avif" srcset="/img/8yxGaeMUrf-2846.avif 2846w"><source type="image/webp" srcset="/img/8yxGaeMUrf-2846.webp 2846w"><img alt="Editor" loading="lazy" decoding="async" src="/img/8yxGaeMUrf-2846.png" width="2846" height="1048"></picture></p>
+<h2>Requirements</h2>
+<p>The SVG builder needed the following features.</p>
+<ul>
+<li>A preset list of available node types (Units, lessons, etc) and a simple connector to join the nodes (lines).</li>
+<li>The editor should be drag and drop based.</li>
+<li>The nodes and lines should all fall on a grid system, so that everything lines up easily.</li>
+<li>A save button will send the array of nodes to the backend for persisting to the database.</li>
+</ul>
+<h2>Libraries</h2>
+<p>Lucikly SVGs are just another form of markup like HTML, and they already have elements like <code>Rect</code> and <code>Line</code> which covers every use case I needed. So the editor will just be adding these elements to an SVG and setting their properties.</p>
+<p>As I am not using any client side library like React, I will need to have a simple way that I can have an array of nodes and reflect that automatically in an SVG. In the end I chose to use <a href="https://alpinejs.dev/">Alpine.js</a>, which is a light library that runs on the client side and provides very basic state management and automatic updating.</p>
+<p>With Alpine.js I could keep an array of nodes and create a template that can render the SVG, by looping the nodes and drawing the elements to the SVG. When any node's properties are changed the front end code is automatically updated to change the SVG.</p>
+<h2>Example code</h2>
+<p>In the following example I have the nodes array, and the Alpine.js template that can render the node to the SVG.</p>
+<p>Nodes array:</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token literal-property property">nodes</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'title'</span><span class="token punctuation">,</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token literal-property property">y</span><span class="token operator">:</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token literal-property property">width</span><span class="token operator">:</span> <span class="token number">120</span><span class="token punctuation">,</span> <span class="token literal-property property">height</span><span class="token operator">:</span> <span class="token number">40</span><span class="token punctuation">,</span> <span class="token literal-property property">color</span><span class="token operator">:</span> <span class="token string">'white'</span><span class="token punctuation">,</span> <span class="token literal-property property">stroke</span><span class="token operator">:</span> <span class="token string">'white'</span><span class="token punctuation">,</span> <span class="token literal-property property">message</span><span class="token operator">:</span> <span class="token string">'Title'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'unit'</span><span class="token punctuation">,</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token literal-property property">y</span><span class="token operator">:</span> <span class="token number">80</span><span class="token punctuation">,</span> <span class="token literal-property property">width</span><span class="token operator">:</span> <span class="token number">120</span><span class="token punctuation">,</span> <span class="token literal-property property">height</span><span class="token operator">:</span> <span class="token number">40</span><span class="token punctuation">,</span> <span class="token literal-property property">color</span><span class="token operator">:</span> <span class="token string">'lightblue'</span><span class="token punctuation">,</span> <span class="token literal-property property">stroke</span><span class="token operator">:</span> <span class="token string">'black'</span><span class="token punctuation">,</span> <span class="token literal-property property">message</span><span class="token operator">:</span> <span class="token string">'Unit'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'lesson'</span><span class="token punctuation">,</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token literal-property property">y</span><span class="token operator">:</span> <span class="token number">140</span><span class="token punctuation">,</span> <span class="token literal-property property">width</span><span class="token operator">:</span> <span class="token number">120</span><span class="token punctuation">,</span> <span class="token literal-property property">height</span><span class="token operator">:</span> <span class="token number">40</span><span class="token punctuation">,</span> <span class="token literal-property property">color</span><span class="token operator">:</span> <span class="token string">'lightgreen'</span><span class="token punctuation">,</span> <span class="token literal-property property">stroke</span><span class="token operator">:</span> <span class="token string">'black'</span><span class="token punctuation">,</span> <span class="token literal-property property">message</span><span class="token operator">:</span> <span class="token string">'Lesson'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'line-horizontal'</span><span class="token punctuation">,</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token literal-property property">y</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span> <span class="token literal-property property">width</span><span class="token operator">:</span> <span class="token number">120</span><span class="token punctuation">,</span> <span class="token literal-property property">height</span><span class="token operator">:</span> <span class="token number">40</span><span class="token punctuation">,</span> <span class="token literal-property property">color</span><span class="token operator">:</span> <span class="token string">'yellow'</span><span class="token punctuation">,</span> <span class="token literal-property property">stroke</span><span class="token operator">:</span> <span class="token string">'black'</span><span class="token punctuation">,</span> <span class="token literal-property property">message</span><span class="token operator">:</span> <span class="token string">'Line-X'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">,</span></code></pre>
+<p>Sample rendering component:</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token keyword">const</span> <span class="token literal-property property">SvgEditorNodesTitle</span><span class="token operator">:</span> <span class="token function-variable function">FC</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>g
+      <span class="token punctuation">{</span><span class="token operator">...</span><span class="token punctuation">{</span>
+        <span class="token string-property property">"x-show"</span><span class="token operator">:</span> <span class="token string">"node.type==='title'"</span><span class="token punctuation">,</span>
+        <span class="token string-property property">":transform"</span><span class="token operator">:</span> <span class="token string">"`translate(${node.x}, ${node.y})`"</span><span class="token punctuation">,</span>
+        <span class="token string-property property">"@mousedown"</span><span class="token operator">:</span> <span class="token string">"startDrag(index, $event, false, 'move')"</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">}</span>
+      <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"hover:cursor-pointer"</span>
+    <span class="token operator">></span>
+      <span class="token operator">&lt;</span>rect
+        <span class="token punctuation">{</span><span class="token operator">...</span><span class="token punctuation">{</span>
+          <span class="token string-property property">":width"</span><span class="token operator">:</span> <span class="token string">"node.width"</span><span class="token punctuation">,</span>
+          <span class="token string-property property">":height"</span><span class="token operator">:</span> <span class="token string">"node.height"</span><span class="token punctuation">,</span>
+          <span class="token string-property property">":fill"</span><span class="token operator">:</span> <span class="token string">"node.color"</span><span class="token punctuation">,</span>
+          <span class="token string-property property">":stroke"</span><span class="token operator">:</span> <span class="token string">"node.stroke"</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">}</span>
+        rx<span class="token operator">=</span><span class="token string">"8"</span>
+        ry<span class="token operator">=</span><span class="token string">"8"</span>
+        stroke<span class="token operator">-</span>width<span class="token operator">=</span><span class="token string">"3"</span>
+      <span class="token operator">/</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>text
+        <span class="token punctuation">{</span><span class="token operator">...</span><span class="token punctuation">{</span>
+          <span class="token string-property property">":x"</span><span class="token operator">:</span> <span class="token string">"node.width / 2"</span><span class="token punctuation">,</span>
+          <span class="token string-property property">":y"</span><span class="token operator">:</span> <span class="token string">"node.height / 2"</span><span class="token punctuation">,</span>
+          <span class="token string-property property">"x-text"</span><span class="token operator">:</span> <span class="token string">"node.message"</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">}</span>
+        text<span class="token operator">-</span>anchor<span class="token operator">=</span><span class="token string">"middle"</span>
+        dominant<span class="token operator">-</span>baseline<span class="token operator">=</span><span class="token string">"middle"</span>
+        style<span class="token operator">=</span><span class="token string">"user-select: none"</span>
+      <span class="token operator">/</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>g<span class="token operator">></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>Sample logic to bind the <code>nodes</code> data to the SVG using Alpine.js. This means that any time the <code>nodes</code> array is manipulated, the SVG data is automatically kept in sync and the SVG elements are changed.</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token operator">&lt;</span>div <span class="token punctuation">{</span><span class="token operator">...</span><span class="token punctuation">{</span> <span class="token string-property property">"x-data"</span><span class="token operator">:</span> <span class="token string">"svgEditor()"</span> <span class="token punctuation">}</span><span class="token punctuation">}</span> <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"flex flex-row"</span><span class="token operator">></span>
+  <span class="token operator">&lt;</span>svg
+    width<span class="token operator">=</span><span class="token string">"1200"</span>
+    height<span class="token operator">=</span><span class="token string">"1011"</span>
+    <span class="token punctuation">{</span><span class="token operator">...</span><span class="token punctuation">{</span>
+      <span class="token string-property property">"@mousemove"</span><span class="token operator">:</span> <span class="token string">"dragging &amp;&amp; dragNode($event)"</span><span class="token punctuation">,</span>
+      <span class="token string-property property">"@mouseup"</span><span class="token operator">:</span> <span class="token string">"endDrag($event)"</span><span class="token punctuation">,</span>
+      <span class="token string-property property">"@mouseleave"</span><span class="token operator">:</span> <span class="token string">"endDrag($event)"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">}</span>
+  <span class="token operator">></span>
+    <span class="token operator">&lt;</span>g transform<span class="token operator">=</span><span class="token string">"translate(200 20)"</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>rect x<span class="token operator">=</span><span class="token string">"0"</span> y<span class="token operator">=</span><span class="token string">"0"</span> width<span class="token operator">=</span><span class="token string">"961"</span> height<span class="token operator">=</span><span class="token string">"961"</span> fill<span class="token operator">=</span><span class="token string">"url(#grid)"</span> <span class="token operator">/</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>template <span class="token punctuation">{</span><span class="token operator">...</span><span class="token punctuation">{</span> <span class="token string-property property">"x-for"</span><span class="token operator">:</span> <span class="token string">"(node, index) in nodes"</span><span class="token punctuation">,</span> <span class="token string-property property">":key"</span><span class="token operator">:</span> <span class="token string">"index"</span> <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>g<span class="token operator">></span>
+          <span class="token operator">&lt;</span>SvgEditorNodesTitle <span class="token operator">/</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>g<span class="token operator">></span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>template<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>g<span class="token operator">></span>
+  <span class="token operator">&lt;</span><span class="token operator">/</span>svg<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span></code></pre>
+<p>In order to support Alpine.js atributes inside a JSX rendered component, the attributes need to be passed as an object and then using the spread operator to bring them back to the top level. Originally I was passing these attributes at the top level, but TypeScript gives errors as these attributes are not supported in JSX.</p>
+<h2>Editor</h2>
+<p>The editor component that was built allows dragging and dropping SVG elements onto a grid, and also allows setting of properties like the text inside the <code>rect</code> elements.</p>
+<h2>Viewer</h2>
+<p>I also build a simple viewer component that receives the <code>nodes</code> array from the database and is able to build the pure SVG and serve it to the client. The viewer component does not support any editing features like drag and drop, and so the generated SVG is simple and clean.</p>
+<h2>Next Steps</h2>
+<p>For the next steps of this project, I will be working on adding the ability to create and view the details pages that will open when clicking on a node. To start with it will support the following details on the page;</p>
+<ul>
+<li>Markdown content for teach the topic</li>
+<li>Free resource links (articles, videos, etc)</li>
+<li>Premium resources (paid for services / items like books)</li>
+</ul>
+
+<ul>
+  <li>
+    Previous: <a href="/articles/2025/12/28/better-auth/">Portuguese AI - Better Auth</a>
+  </li>
+  
+</ul>
+
+    </main>
+
+    <footer class="mx-auto pb-4">Copyright 2026 - James Lawler</footer>
+  </body>
+</html>
