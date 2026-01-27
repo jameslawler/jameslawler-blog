@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portuguese AI - Lessons Modal</title>
+    <meta name="description" content="Markdown lessons and resources">
+    <link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="James Lawler">
+    <link rel="alternate" href="/feed/feed.json" type="application/json" title="James Lawler">
+    <meta name="generator" content="Eleventy v2.0.1">
+
+    <link rel="stylesheet" href="/assets/css/tailwind.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script defer data-domain="jameslawler.com" src="https://api.jameslawler.com/js/script.outbound-links.js"></script>
+  </head>
+  <body class="flex flex-col container mx-auto min-h-screen dark:bg-slate-900">
+    <a href="#skip" class="hidden visually-hidden">Skip to main content</a>
+
+    <header>
+      <div class="flex items-center mt-4 md:mt-12">
+        <div class="flex flex-col flex-1">
+          <a href="/" class="text-3xl pb-6 font-bold dark:text-gray-100">James Lawler</a>
+          <nav>
+            <h2 class="hidden visually-hidden">Top level navigation menu</h2>
+            <ul class="flex flex-row flex-wrap gap-2 md:gap-8">
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/">Home</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/articles/">Articles</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/projects/">Projects</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/notes/">Notes</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/follow-me/">Follow Me</a></li>
+            </ul>
+          </nav>
+        </div>
+        <img src="/img/james-lawler.jpg" class="hidden size-20 rounded-full md:block" alt="James Lawler" />
+      </div>
+      
+    </header>
+
+    <hr class="my-8 h-px bg-gray-400 border-0 dark:bg-gray-100">
+
+    <main id="skip" class="prose max-w-none flex-grow pb-24 dark:prose-invert">
+      
+<h1 class="text-3xl font-bold mb-4 dark:text-gray-100">Portuguese AI - Lessons Modal</h1>
+
+
+<div class="flex flex-row flex-wrap gap-2 my-6">
+              
+<a href="https://www.cloudflare.com/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/Cloudflare-F38020?logo=Cloudflare&logoColor=white"
+    alt="Cloudflare"
+/></a>
+                                 
+<a href="https://alpinejs.dev/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/Alpine.js-8BC0D0?logo=alpinedotjs&logoColor=fff"
+    alt="AlpineJS"
+/></a>
+                    
+
+</div>
+
+
+<div class="flex flex-row gap-4">
+  <time
+    class="dark:text-gray-100"
+    datetime="2026-01-26"
+    >26 January 2026</time
+  >
+  <div
+    class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100"
+  >
+    <a href="/tags/cloudflare/" class="post-tag">cloudflare</a>
+  </div>
+  <div
+    class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100"
+  >
+    <a href="/tags/portuguese-ai/" class="post-tag">portuguese-ai</a>
+  </div>
+</div>
+
+<p>Now that I have a node map builder and viewer in the project, the next step I wanted to add was the content that opens when clicking on a node. Initially, the modal content will contain;</p>
+<ul>
+<li>Lesson information</li>
+<li>Resources lists</li>
+</ul>
+<p>I added a modal which has two tabs inside; resources and lesson information.</p>
+<h2>Markdown Editor / Viewer</h2>
+<p>In order to show a dynamic and clean learning and resources page I chose to use markdown with a simple editor page to provide the markdown text, and then a markdown viewer using the <a href="https://www.npmjs.com/package/marked">marked npm package</a> to render the markdown to HTML. All of this was done using Hono, D1 database, HTMX and TailwindCSS.</p>
+<h3>Database Schema</h3>
+<p>I added two new tables to the database <code>lessons</code> and <code>resources</code>. Each is simply made up of a title and markdown text field. In the resources schema I added a links field which stores an array of links that will be rendered under the markdown text.</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token keyword">export</span> type ResourceItem <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">group</span><span class="token operator">:</span> <span class="token string">"free"</span> <span class="token operator">|</span> <span class="token string">"premium"</span><span class="token punctuation">;</span>
+  <span class="token literal-property property">name</span><span class="token operator">:</span> string<span class="token punctuation">;</span>
+  <span class="token literal-property property">url</span><span class="token operator">:</span> string<span class="token punctuation">;</span>
+  <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">"article"</span> <span class="token operator">|</span> <span class="token string">"video"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> resources <span class="token operator">=</span> <span class="token function">sqliteTable</span><span class="token punctuation">(</span><span class="token string">"resources"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">id</span><span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">primaryKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">title</span><span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"title"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">markdown</span><span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"markdown"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">links</span><span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"links"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token literal-property property">mode</span><span class="token operator">:</span> <span class="token string">"json"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span>$type<span class="token operator">&lt;</span>ResourceItem<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">createdAt</span><span class="token operator">:</span> <span class="token function">integer</span><span class="token punctuation">(</span><span class="token string">"createdAt"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">updatedAt</span><span class="token operator">:</span> <span class="token function">integer</span><span class="token punctuation">(</span><span class="token string">"updatedAt"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> lessons <span class="token operator">=</span> <span class="token function">sqliteTable</span><span class="token punctuation">(</span><span class="token string">"lessons"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">id</span><span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">primaryKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">title</span><span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"title"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">markdown</span><span class="token operator">:</span> <span class="token function">text</span><span class="token punctuation">(</span><span class="token string">"markdown"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">createdAt</span><span class="token operator">:</span> <span class="token function">integer</span><span class="token punctuation">(</span><span class="token string">"createdAt"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">updatedAt</span><span class="token operator">:</span> <span class="token function">integer</span><span class="token punctuation">(</span><span class="token string">"updatedAt"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2>Database Repositories</h2>
+<p>As part of this stage of the project I took the opportunity to clean up the code architecture and implement a repository pattern for the database logic. I moved all the database logic out of the REST api layer and moved it to repository functions. Each database table has its own repository file with business relevant functions, which are mostly following the CRUD structure of create, read, update, and delete.</p>
+<p>Example from the lessons repository file.</p>
+<pre class="language-js" tabindex="0"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">{</span> DrizzleClient <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">".."</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> eq <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"drizzle-orm"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> schema <span class="token keyword">from</span> <span class="token string">"../schema"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Lesson <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"../../../types/lesson"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">getLessons</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token literal-property property">db</span><span class="token operator">:</span> DrizzleClient</span><span class="token punctuation">)</span> <span class="token operator">=></span>
+  db<span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span>schema<span class="token punctuation">.</span>lessons<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">getLesson</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token literal-property property">db</span><span class="token operator">:</span> DrizzleClient<span class="token punctuation">,</span> <span class="token literal-property property">id</span><span class="token operator">:</span> string</span><span class="token punctuation">)</span> <span class="token operator">=></span>
+  db<span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span>schema<span class="token punctuation">.</span>lessons<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token function">eq</span><span class="token punctuation">(</span>schema<span class="token punctuation">.</span>lessons<span class="token punctuation">.</span>id<span class="token punctuation">,</span> id<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> createLesson <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span>
+  <span class="token literal-property property">db</span><span class="token operator">:</span> DrizzleClient<span class="token punctuation">,</span>
+  <span class="token literal-property property">lesson</span><span class="token operator">:</span> Omit<span class="token operator">&lt;</span>Lesson<span class="token punctuation">,</span> <span class="token string">"id"</span><span class="token operator">></span>
+<span class="token punctuation">)</span> <span class="token operator">=></span>
+  db
+    <span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>schema<span class="token punctuation">.</span>lessons<span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">values</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      <span class="token literal-property property">id</span><span class="token operator">:</span> crypto<span class="token punctuation">.</span><span class="token function">randomUUID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">title</span><span class="token operator">:</span> lesson<span class="token punctuation">.</span>title<span class="token punctuation">,</span>
+      <span class="token literal-property property">markdown</span><span class="token operator">:</span> lesson<span class="token punctuation">.</span>markdown<span class="token punctuation">,</span>
+      <span class="token literal-property property">createdAt</span><span class="token operator">:</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">updatedAt</span><span class="token operator">:</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">returning</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">id</span><span class="token operator">:</span> schema<span class="token punctuation">.</span>lessons<span class="token punctuation">.</span>id <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">updateLesson</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token literal-property property">db</span><span class="token operator">:</span> DrizzleClient<span class="token punctuation">,</span> <span class="token literal-property property">lesson</span><span class="token operator">:</span> Lesson</span><span class="token punctuation">)</span> <span class="token operator">=></span>
+  db
+    <span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>schema<span class="token punctuation">.</span>lessons<span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      <span class="token literal-property property">title</span><span class="token operator">:</span> lesson<span class="token punctuation">.</span>title<span class="token punctuation">,</span>
+      <span class="token literal-property property">markdown</span><span class="token operator">:</span> lesson<span class="token punctuation">.</span>markdown<span class="token punctuation">,</span>
+      <span class="token literal-property property">updatedAt</span><span class="token operator">:</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token function">eq</span><span class="token punctuation">(</span>schema<span class="token punctuation">.</span>lessons<span class="token punctuation">.</span>id<span class="token punctuation">,</span> lesson<span class="token punctuation">.</span>id<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">returning</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">id</span><span class="token operator">:</span> schema<span class="token punctuation">.</span>lessons<span class="token punctuation">.</span>id <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2>Next Steps</h2>
+<p>I have been adding the functionality so far without a good UI plan and I want to tackle this topic later on once I have a feature complete first version.</p>
+<p>Next I plan to add the first AI integrations using OpenAI APIs. The first integration will be as simple as possible - a chat window that is contextual based on the contents of the lesson / resource tab that is open.</p>
+
+<ul>
+  <li>
+    Previous: <a href="/articles/2026/01/15/svg-builder/">Portuguese AI - SVG Builder</a>
+  </li>
+  
+</ul>
+
+    </main>
+
+    <footer class="mx-auto pb-4">Copyright 2026 - James Lawler</footer>
+  </body>
+</html>
