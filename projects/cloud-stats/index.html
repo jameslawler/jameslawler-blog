@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Stats</title>
+    <meta name="description" content="I am writing about my experiences as a software developer.">
+    <link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="James Lawler">
+    <link rel="alternate" href="/feed/feed.json" type="application/json" title="James Lawler">
+    <meta name="generator" content="Eleventy v2.0.1">
+
+    <link rel="stylesheet" href="/assets/css/tailwind.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script defer data-domain="jameslawler.com" src="https://api.jameslawler.com/js/script.outbound-links.js"></script>
+    <script type="module" src="https://s.jameslawler.com/js/cloudstats.webcomponent.js"></script>
+  </head>
+  <body class="flex flex-col container mx-auto min-h-screen dark:bg-slate-900">
+    <a href="#skip" class="hidden visually-hidden">Skip to main content</a>
+
+    <header>
+      <div class="flex items-center mt-4 md:mt-12">
+        <div class="flex flex-col flex-1">
+          <a href="/" class="text-3xl pb-6 font-bold dark:text-gray-100">James Lawler</a>
+          <nav>
+            <h2 class="hidden visually-hidden">Top level navigation menu</h2>
+            <ul class="flex flex-row flex-wrap gap-2 md:gap-8">
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/">Home</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/articles/">Articles</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/projects/">Projects</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/notes/">Notes</a></li>
+              <li class="dark:text-gray-100"><a class="p-2 md:p-4 first:pl-0" href="/follow-me/">Follow Me</a></li>
+            </ul>
+          </nav>
+        </div>
+        <img src="/img/james-lawler.jpg" class="hidden size-20 rounded-full md:block" alt="James Lawler" />
+      </div>
+      
+    </header>
+
+    <hr class="my-8 h-px bg-gray-400 border-0 dark:bg-gray-100">
+
+    <main id="skip" class="prose max-w-none flex-grow pb-24 dark:prose-invert">
+      
+<h1 class="text-3xl font-bold mb-4 dark:text-gray-100">Cloud Stats</h1>
+
+
+<div class="flex flex-row flex-wrap gap-2 my-6">
+              
+<a href="https://www.cloudflare.com/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/Cloudflare-F38020?logo=Cloudflare&logoColor=white"
+    alt="Cloudflare"
+/></a>
+                           
+
+</div>
+
+
+<p>The <a href="https://github.com/jameslawler/cloudstats-app">Cloud Stats</a> project is my attempt at building a very simple web page and event tracker that runs inside a Cloudflare worker and D1 database. I wanted to be able to replace more complex solutions like Google Analytics and have a self hosted and customizable solution.</p>
+<h2>Architecture</h2>
+<p><picture><source type="image/avif" srcset="/img/oyBeHmzYqm-991.avif 991w"><source type="image/webp" srcset="/img/oyBeHmzYqm-991.webp 991w"><img alt="Architecture" loading="lazy" decoding="async" src="/img/oyBeHmzYqm-991.png" width="991" height="390"></picture></p>
+<p>The architecture has been kept simple and maintainable on purpose for easy to manage in the future. The main part of this project is the Cloudflare Worker that connects the clients to the database.</p>
+<h2>Cloudflare Worker</h2>
+<h3>Tech Stack</h3>
+<ul>
+<li><a href="https://www.typescriptlang.org/">TypeScript</a></li>
+<li><a href="https://hono.dev/">Hono</a></li>
+<li><a href="https://orm.drizzle.team/">Drizzle ORM</a></li>
+</ul>
+<h3>API Design</h3>
+<ul>
+<li><code>GET /assets/site/:actionName/image.png</code></li>
+</ul>
+<p>This endpoint returns a transparent image and at the same time it updates the statistics table in the database. The image has a cache control setting of 60 seconds to ensure that the browser does not load the image again if the user refreshes or navigates to this same page within a short time frame.</p>
+<ul>
+<li><code>GET /assets/site/image.png</code></li>
+</ul>
+<p>This endpoint is the same as the previous image endpoint except without an action name in the URL. This endpoint is specifically used for tracking a generic visit to the domain, so that the statistics can best estimate the number of unique visits to the domain. The cache control is set to 10 minutes for this image.</p>
+<ul>
+<li><code>POST /events</code></li>
+</ul>
+<p>This endpoint is a <code>POST</code> endpoint to create a new statistic via an API call. This endpoint requires a secret api key in the header to ensure only authorized callers can use the API.</p>
+<ul>
+<li><code>GET /statistics</code></li>
+</ul>
+<p>This endpoint currently returns all statistics from the current domain. This is a debug endpoint only and my intention is to create a simple dashboard endpoint that will return a very basic HTML site that gives a summary of the current statistics.</p>
+<h3>Data structure</h3>
+<p>I attempted to keep the data structure as simple as possible while also considering that Cloudflare D1 pricing is charged based on reads and writes. In order to reduce costs, I decided to have only one table rather than a clean relational database structure.</p>
+<p>I wanted the one table to be flexible enough that it supports page views, events, and perhaps other types of statistics in the future. The table has a <code>type</code> column and then based on the type the <code>actionName</code> and <code>actionValue</code> columns are used to identify the actual statistics (eg. <code>actionName</code> = <code>article</code> and <code>actionValue</code> = <code>https://www.domain.com/page</code>).</p>
+<p>The table is called <code>statistics</code>and makes use of the <code>JSON</code> string type.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Auto generated UUID</td>
+</tr>
+<tr>
+<td>siteId</td>
+<td>Site Identifier that this statistic belongs too</td>
+</tr>
+<tr>
+<td>type</td>
+<td>Type of statistics (visit, event)</td>
+</tr>
+<tr>
+<td>actionName</td>
+<td>Name of the action (eg. page_view, download)</td>
+</tr>
+<tr>
+<td>actionValue</td>
+<td>Value of the action (eg. page url, file url)</td>
+</tr>
+<tr>
+<td>overallCounts</td>
+<td>JSON object containing count statistics</td>
+</tr>
+<tr>
+<td>countryCounts</td>
+<td>JSON object containing count statistics</td>
+</tr>
+<tr>
+<td>refererCounts</td>
+<td>JSON object containing count statistics</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>Created date</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>Updated date</td>
+</tr>
+</tbody>
+</table>
+<p>The JSON columns for the counts contain multiple places that need to increment the counts on each increment. In order to make the updates atomic, I needed to find a way to avoid doing a database read to get the current values and then do a write with the updated values. Luckily the database supports the <a href="">json_set</a> command which allows a single database call to update the counts in one action.</p>
+<p>The following code snippet below is an example of how the <code>total</code> count is updated in one action. The datatbase first attempts to insert the clean <code>insertJson</code> value with counts of 1. But if the entry already exists, it then attempts to update the current value by using the <code>json_set</code> command to get the current count and increment it by 1.</p>
+<pre class="language-typescript" tabindex="0"><code class="language-typescript"><span class="token keyword">const</span> overallCountsYearPath <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">$.years.</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>year<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">.months.</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>month<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> insertJson <span class="token operator">=</span> <span class="token punctuation">{</span>
+  total<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  years<span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">[</span>year<span class="token punctuation">]</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      months<span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token punctuation">[</span>month<span class="token punctuation">]</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">await</span> db
+  <span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>schema<span class="token punctuation">.</span>statistics<span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">values</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    id<span class="token operator">:</span> crypto<span class="token punctuation">.</span><span class="token function">randomUUID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    siteId<span class="token punctuation">,</span>
+    type<span class="token punctuation">,</span>
+    actionName<span class="token punctuation">,</span>
+    actionValue<span class="token punctuation">,</span>
+    overallCounts<span class="token operator">:</span> insertJson<span class="token punctuation">,</span>
+    createdAt<span class="token operator">:</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    updatedAt<span class="token operator">:</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">onConflictDoUpdate</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    target<span class="token operator">:</span> <span class="token punctuation">[</span>
+      schema<span class="token punctuation">.</span>statistics<span class="token punctuation">.</span>siteId<span class="token punctuation">,</span>
+      schema<span class="token punctuation">.</span>statistics<span class="token punctuation">.</span>type<span class="token punctuation">,</span>
+      schema<span class="token punctuation">.</span>statistics<span class="token punctuation">.</span>actionName<span class="token punctuation">,</span>
+      schema<span class="token punctuation">.</span>statistics<span class="token punctuation">.</span>actionValue<span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    set<span class="token operator">:</span> <span class="token punctuation">{</span>
+      overallCounts<span class="token operator">:</span> sql<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+					json_set(
+						</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>schema<span class="token punctuation">.</span>statistics<span class="token punctuation">.</span>overallCounts<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">,
+						'$.total',
+						COALESCE(json_extract(</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>schema<span class="token punctuation">.</span>statistics<span class="token punctuation">.</span>overallCounts<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">, '$.total'), 0) + 1,
+						</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>overallCountsYearPath<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">,
+						COALESCE(json_extract(</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>schema<span class="token punctuation">.</span>statistics<span class="token punctuation">.</span>overallCounts<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">, </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>overallCountsYearPath<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">), 0) + 1
+					)
+				</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+      updatedAt<span class="token operator">:</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h3>Web Component</h3>
+<p>The Cloudflare worker project exposes a HTML web component that can be imported and used on any web page. The web component constructs a <code>&lt;img&gt;</code> URL path to correctly increase the statistics for that page.</p>
+<p>The below HTML snippet is how to add the component and use it.</p>
+<pre class="language-html" tabindex="0"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span>
+      <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>module<span class="token punctuation">"</span></span>
+      <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://hits.mydomain.com/js/cloudstats.webcomponent.js<span class="token punctuation">"</span></span>
+    <span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>cloud-stats</span> <span class="token attr-name">action</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>page_load<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>cloud-stats</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span></code></pre>
+<h2>Setting Up a Site</h2>
+<p>In Cloudflare development platform, add a custom domain to the worker so that it runs on the same domain as the site that will be tracked. For example if the site that you want to track is <code>https://www.domain.com</code> then setup the worker to run on a domain like <code>https://stats.domain.com</code>.</p>
+<p>Update the <code>SITE_IDS</code> environment variables of the worker to add the new domain to the list.</p>
+<p>Update the web site project to add the web component and usage of the <cloud-stats> component. The section above shows to to import it and add the component. Set the <code>action</code> attribute for the use case of that tracking page. If you do not include the <code>action</code> attribute it will track a generic domain visit.</p>
+<h2>Next steps</h2>
+<p>For the web sites that I am switching to use this project, I want to export some of the core statistics and then import into this project.</p>
+<p>Next I would add a simple dashboard page to see overall statistics, and then I want to add a visible image tracking page that will return an image with the current statistics for that <code>actionName</code> and <code>actionValue</code> like the 90s hit counters.</p>
+
+
+<cloud-stats action="project" />
+
+    </main>
+
+    <cloud-stats />
+    <footer class="mx-auto pb-4">Copyright 2026 - James Lawler</footer>
+  </body>
+</html>

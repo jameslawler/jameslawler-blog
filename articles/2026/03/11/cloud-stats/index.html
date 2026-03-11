@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tagged “cloudflare”</title>
-    <meta name="description" content="I am writing about my experiences as a software developer.">
+    <title>Cloud Stats</title>
+    <meta name="description" content="A simple Cloudflare based hit counter tracker">
     <link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="James Lawler">
     <link rel="alternate" href="/feed/feed.json" type="application/json" title="James Lawler">
     <meta name="generator" content="Eleventy v2.0.1">
@@ -45,51 +45,51 @@
 
     <main id="skip" class="prose max-w-none flex-grow pb-24 dark:prose-invert">
       
-<h1>Tagged “cloudflare”</h1>
+<h1 class="text-3xl font-bold mb-4 dark:text-gray-100">Cloud Stats</h1>
 
- 
-<h3>2026</h4>
+
+<div class="flex flex-row flex-wrap gap-2 my-6">
+              
+<a href="https://www.cloudflare.com/">
+  <img
+    class="m-0"
+    src="https://img.shields.io/badge/Cloudflare-F38020?logo=Cloudflare&logoColor=white"
+    alt="Cloudflare"
+/></a>
+              
+
+</div>
+
+
+<div class="flex flex-row gap-4">
+  <time
+    class="dark:text-gray-100"
+    datetime="2026-03-11"
+    >11 March 2026</time
+  >
+  <div
+    class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100"
+  >
+    <a href="/tags/cloudflare/" class="post-tag">cloudflare</a>
+  </div>
+  <div
+    class="bg-gray-100 border-gray-500 rounded-md px-2 dark:bg-gray-950 dark:text-gray-100"
+  >
+    <a href="/tags/d1/" class="post-tag">d1</a>
+  </div>
+</div>
+
+<p>I needed to replace my usage of 3rd party page tracking software and since all of my projects are running in Cloudflare I wanted to setup a very basic Cloudflare worker that uses a single table in a D1 database.</p>
+<p>I created a reusable <a href="https://github.com/jameslawler/cloudstats-app">Cloud Stats</a> project that uses a single table and can do atomic updates to avoid losing visit counts. I wrote up a <a href="https://www.jameslawler.com/projects/cloud-stats/">project page</a> for it with architecture information and explanations.</p>
+
 <ul>
-  
   <li>
-    <a href="/articles/2026/03/11/cloud-stats/">Cloud Stats</a>
-  </li>
-  
-  <li>
-    <a href="/articles/2026/01/26/lessons-modal/">Portuguese AI - Lessons Modal</a>
-  </li>
-  
-  <li>
-    <a href="/articles/2026/01/15/svg-builder/">Portuguese AI - SVG Builder</a>
+    Previous: <a href="/articles/2026/01/26/lessons-modal/">Portuguese AI - Lessons Modal</a>
   </li>
   
 </ul>
 
-<h3>2025</h4>
-<ul>
-  
-  <li>
-    <a href="/articles/2025/12/28/better-auth/">Portuguese AI - Better Auth</a>
-  </li>
-  
-  <li>
-    <a href="/articles/2025/12/26/cloudflare-hono-htmx/">Portuguese AI - Cloudflare / Hono / HTMX</a>
-  </li>
-  
-  <li>
-    <a href="/articles/2025/12/24/new-project-portuguese-ai/">Portuguese AI</a>
-  </li>
-  
-  <li>
-    <a href="/articles/2025/06/20/cloudflare-developer-platform-experiences/">Cloudflare Developer Platform experiences</a>
-  </li>
-  
-</ul>
-
-
-
-<p>See <a href="/tags/">all tags</a>.</p>
-
+<cloud-stats action="post" />
 
     </main>
 

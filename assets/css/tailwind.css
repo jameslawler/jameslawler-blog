@@ -1158,6 +1158,10 @@ video {
   background-size: var(--pattern-size, 40px) var(--pattern-size, 40px);
 }
 
+.visible {
+  visibility: visible;
+}
+
 .static {
   position: static;
 }
