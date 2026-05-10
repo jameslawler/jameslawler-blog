@@ -30,6 +30,10 @@ See [all articles](/articles/).
 
 ## ⛏️ Things I've Done
 
+### March 2026
+
+- Built an open-source [cloud statistics](https://www.jameslawler.com/projects/cloud-stats/) tool that can be deployed to Cloudflare and to your own websites. It is capable of tracking page views and events without any personal information (cookie-free).
+
 ### July 2025
 
 - Developed a [flashlight](https://flashlight.jameslawler.com/) website to help me navigate dark rooms without blasting on my smartphone's built in flash.
