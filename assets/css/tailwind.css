@@ -1178,6 +1178,10 @@ video {
   position: relative;
 }
 
+.isolate {
+  isolation: isolate;
+}
+
 .m-0 {
   margin: 0px;
 }
